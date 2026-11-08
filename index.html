@@ -2,10 +2,10 @@
 <html lang="nl" class="dark">
 <head>
 
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/nieuweschoolfotos/nieuweschoolfotos/main/favicon.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/nieuweklasfotos/nieuweklasfotos/main/favicon.png">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>nieuwe schoolfoto's - Gratis Archief</title>
+  <title>nieuwe klasfoto's - Gratis Archief</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="manifest.js"></script>
@@ -40,7 +40,7 @@
           <i class="fa-solid fa-unlock-keyhole text-white text-lg"></i>
         </div>
         <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-          nieuwe schoolfoto's
+          nieuwe klasfoto's
         </span>
       </div>
 
@@ -66,7 +66,7 @@
       <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
       
       <h1 class="text-4xl md:text-6xl font-black tracking-tight max-w-3xl leading-tight mb-6">
-        Schoolfoto's <span class="bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">gratis bekijken</span> & bestellen
+        klasfoto's <span class="bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">gratis bekijken</span> & bestellen
       </h1>
       
       <p class="text-slate-600 dark:text-slate-400 text-lg max-w-xl mb-10 leading-relaxed">
@@ -87,12 +87,12 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
+        <div onclick="selectCategory('klas')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
           <div class="w-20 h-20 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-3xl mb-6 group-hover:scale-110 transition">
             <i class="fa-solid fa-users"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-3">School foto's</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Alle schoolfoto's per jaar, gratis te bekijken en printen.</p>
+          <h3 class="text-2xl font-bold mb-3">klas foto's</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Alle klasfoto's per jaar, gratis te bekijken en printen.</p>
           <span class="text-blue-500 font-semibold text-sm flex items-center gap-2 group-hover:translate-x-1 transition">
             Bekijken <i class="fa-solid fa-chevron-right text-xs"></i>
           </span>
@@ -125,7 +125,7 @@
             <i class="fa-solid fa-arrow-left"></i>
           </button>
           <div>
-            <h2 id="gallery-title" class="text-2xl font-bold">School foto's</h2>
+            <h2 id="gallery-title" class="text-2xl font-bold">klas foto's</h2>
             <p id="gallery-subtitle" class="text-slate-500 dark:text-slate-400 text-xs">Selecteer een jaar</p>
           </div>
         </div>
@@ -194,7 +194,7 @@
 
       <div class="text-center mb-6">
         <div class="w-32 h-20 rounded-xl overflow-hidden border border-indigo-500/30 mx-auto mb-4 shadow-md bg-slate-950 flex items-center justify-center">
-          <img src="https://www.nieuweschoolfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Inlogkaart" class="w-full h-full object-cover">
+          <img src="https://www.nieuweklasfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Inlogkaart" class="w-full h-full object-cover">
         </div>
         <h3 id="pass-student-name" class="text-xl font-bold">Persoon</h3>
         <p class="text-slate-500 dark:text-slate-400 text-xs">Voer het wachtwoord in</p>
@@ -300,7 +300,7 @@
 
       <!-- Voorbeeld Inlogkaart Foto -->
       <div class="mb-5 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 relative group shadow-inner">
-        <img src="https://www.nieuweschoolfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Voorbeeld inlogkaart met code" class="w-full h-44 object-cover">
+        <img src="https://www.nieuweklasfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Voorbeeld inlogkaart met code" class="w-full h-44 object-cover">
         <div class="p-2.5 bg-slate-900/95 backdrop-blur-sm text-[11px] text-slate-300 flex items-center gap-2 border-t border-slate-800">
           <i class="fa-solid fa-circle-info text-indigo-400 text-xs"></i>
           <span>Zie voorbeeld: de inlogcode staat op jouw persoonlijke inlogkaart.</span>
@@ -346,13 +346,13 @@
 
   <!-- FOOTER -->
   <footer class="w-full border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500">
-    <p>nieuwe schoolfoto's - Gratis Archief</p>
+    <p>nieuwe klasfoto's - Gratis Archief</p>
   </footer>
 
     <!-- JAVASCRIPT LOGICA -->
   <script>
-    let GITHUB_USERNAME = 'nieuweschoolfotos';
-    let GITHUB_REPO = 'nieuweschoolfotos';
+    let GITHUB_USERNAME = 'nieuweklasfotos';
+    let GITHUB_REPO = 'nieuweklasfotos';
     let BRANCH = 'main';
 
     if (window.location.hostname.endsWith('github.io')) {
@@ -367,10 +367,10 @@
                        window.location.hostname === 'localhost' || 
                        window.location.hostname === '127.0.0.1';
 
-    let driveData = { school: {}, eigen: {} };
+    let driveData = { klas: {}, eigen: {} };
     let isDataLoaded = false;
     let isFetching = false;
-    let currentCategory = 'school';
+    let currentCategory = 'klas';
     let currentYear = '';
     let selectedStudent = null;
     let selectedPhotos = [];
@@ -395,31 +395,31 @@
 
     // Gegevens Veilig Normaliseren
     function normalizeData(raw) {
-      if (!raw) return { school: {}, eigen: {} };
-      let norm = { school: {}, eigen: {} };
+      if (!raw) return { klas: {}, eigen: {} };
+      let norm = { klas: {}, eigen: {} };
 
-      // School gegevens
-      for (let yr in (raw.school || {})) {
-        norm.school[yr] = [];
-        const items = raw.school[yr] || [];
+      // klas gegevens
+      for (let yr in (raw.klas || {})) {
+        norm.klas[yr] = [];
+        const items = raw.klas[yr] || [];
         if (items.length > 0 && items[0].versions) {
-          norm.school[yr] = items.map(p => ({
+          norm.klas[yr] = items.map(p => ({
             ...p,
             activeVersionIndex: p.activeVersionIndex || 0
           }));
         } else {
           items.forEach(f => {
             (f.photos || []).forEach(p => {
-              let photoEntry = norm.school[yr].find(item => item.name === p.name);
+              let photoEntry = norm.klas[yr].find(item => item.name === p.name);
               if (!photoEntry) {
                 photoEntry = {
-                  id: `school_${yr}_${p.name}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+                  id: `klas_${yr}_${p.name}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
                   name: p.name,
                   year: yr,
                   activeVersionIndex: 0,
                   versions: []
                 };
-                norm.school[yr].push(photoEntry);
+                norm.klas[yr].push(photoEntry);
               }
               const folderName = p.folder || f.folderName || '1';
               photoEntry.versions.push({
@@ -486,7 +486,7 @@
     async function initData() {
       if (isDataLoaded) return;
 
-      if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.school || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
+      if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.klas || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
         driveData = normalizeData(window.LOCAL_MANIFEST);
         isDataLoaded = true;
         return;
@@ -518,7 +518,7 @@
           return;
         }
 
-        let newSchoolData = {};
+        let newklasData = {};
         let newEigenData = {};
         const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
 
@@ -528,8 +528,8 @@
           const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
           const localUrl = `./${item.path}`;
           
-          // school/JAAR/ACHTERGROND/photo.jpg of school/JAAR/photo.jpg
-          if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
+          // klas/JAAR/ACHTERGROND/photo.jpg of klas/JAAR/photo.jpg
+          if (pathParts[0] === 'foto' && pathParts[1] === 'klas' && pathParts.length >= 4) {
             let year = pathParts[2];
             let subFolder = 'Algemeen';
             let fileName = '';
@@ -542,18 +542,18 @@
             }
             
             if (imageRegex.test(fileName) && fileName !== 'pass.txt') {
-              if (!newSchoolData[year]) newSchoolData[year] = [];
+              if (!newklasData[year]) newklasData[year] = [];
               
-              let photoItem = newSchoolData[year].find(p => p.name === fileName);
+              let photoItem = newklasData[year].find(p => p.name === fileName);
               if (!photoItem) {
                 photoItem = {
-                  id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+                  id: `klas_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
                   name: fileName,
                   year: year,
                   activeVersionIndex: 0,
                   versions: []
                 };
-                newSchoolData[year].push(photoItem);
+                newklasData[year].push(photoItem);
               }
 
               const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
@@ -628,7 +628,7 @@
           }
         }
 
-        driveData = { school: newSchoolData, eigen: newEigenData };
+        driveData = { klas: newklasData, eigen: newEigenData };
         isDataLoaded = true;
       } catch (err) {
         console.error("Fout bij laden van GitHub gegevens:", err);
@@ -650,8 +650,8 @@
 
     async function selectCategory(cat) {
       currentCategory = cat;
-      document.getElementById('gallery-title').innerText = cat === 'school' ? "Schoolfoto's" : "Per Persoon";
-      document.getElementById('gallery-subtitle').innerText = cat === 'school' ? "Selecteer een jaar en bekijk de foto's" : "Kies een leerling of vraag je code op";
+      document.getElementById('gallery-title').innerText = cat === 'klas' ? "klasfoto's" : "Per Persoon";
+      document.getElementById('gallery-subtitle').innerText = cat === 'klas' ? "Selecteer een jaar en bekijk de foto's" : "Kies een leerling of vraag je code op";
       navigateTo('page-gallery');
 
       const container = document.getElementById('gallery-content');
@@ -697,8 +697,8 @@
     }
 
     function getCurrentPhotosList() {
-      if (currentCategory === 'school') {
-        return driveData.school[currentYear] || [];
+      if (currentCategory === 'klas') {
+        return driveData.klas[currentYear] || [];
       } else if (selectedStudent) {
         return selectedStudent.photos || [];
       }
@@ -744,8 +744,8 @@
     function renderGalleryContent() {
       const container = document.getElementById('gallery-content');
       
-      if (currentCategory === 'school') {
-        const photos = driveData.school[currentYear] || [];
+      if (currentCategory === 'klas') {
+        const photos = driveData.klas[currentYear] || [];
         if (photos.length === 0) {
           container.innerHTML = `
             <div class="text-center py-16">
@@ -1062,26 +1062,26 @@
 
       const subject = encodeURIComponent(`Inlogkaart Code Aanvraag - ${name} (${code})`);
       const body = encodeURIComponent(
-        `Beste Nieuwe Schoolfoto's,\n\n` +
+        `Beste Nieuwe klasfoto's,\n\n` +
         `Mijn naam staat niet in de lijst op de website. Hierbij geef ik mijn inlogkaart gegevens door:\n\n` +
         `Inlogkaart Code: ${code}\n` +
         `Naam leerling: ${name}\n` +
         `E-mailadres: ${email}\n` +
-        `Jaar / Schooljaar: ${year}\n\n` +
+        `Jaar / klasjaar: ${year}\n\n` +
         `Graag ontvang ik binnen 7 dagen toegang tot mijn foto's.\n\n` +
         `Met vriendelijke groet,\n` +
         `${name}`
       );
 
       // Open Gmail / E-mail cliënt
-      window.location.href = `mailto:nieuweschoolfotos@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:nieuweklasfotos@gmail.com?subject=${subject}&body=${body}`;
 
       closeMissingCodeModal();
 
       setTimeout(() => {
         alert(
           `Bedankt voor je aanvraag, ${name}!\n\n` +
-          `Je e-mailprogramma is geopend om de gegevens te versturen naar nieuweschoolfotos@gmail.com.\n\n` +
+          `Je e-mailprogramma is geopend om de gegevens te versturen naar nieuweklasfotos@gmail.com.\n\n` +
           `Wij gaan direct voor je op zoek en nemen binnen 7 dagen contact met je op per e-mail!`
         );
       }, 350);
@@ -1119,10 +1119,10 @@
 
       let photoListText = selectedPhotos.map(p => `- ${p.name} (Versie: ${p.backgroundName || p.folder}) | Link: ${p.url}`).join('\n');
 
-      const subject = encodeURIComponent("Print / Bestelling Aanvraag - Nieuwe Schoolfoto's");
+      const subject = encodeURIComponent("Print / Bestelling Aanvraag - Nieuwe klasfoto's");
       const body = encodeURIComponent(`Hallo,\n\nNaam: ${name}\nPapierformaat: ${paperType}\n\nGeselecteerde Foto's:\n${photoListText}\n\nMet vriendelijke groet,\n${name}`);
 
-      window.location.href = `mailto:nieuweschoolfotos@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:nieuweklasfotos@gmail.com?subject=${subject}&body=${body}`;
       closePrintModal();
     }
 
