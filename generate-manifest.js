@@ -31,15 +31,27 @@ function generateManifest() {
   };
 
   if (!fs.existsSync(fotoDir)) {
-    console.log("foto klasoru bulunamadi!");
+    console.log("foto map niet gevonden!");
     return;
   }
 
   const allFiles = getFiles(fotoDir, 'foto');
   const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
 
+  // Jaar master wachtwoorden verzamelen (bijv. foto/eigen/2026/pass.txt)
+  const yearMasterPasswords = {};
   for (const file of allFiles) {
     const parts = file.relPath.split('/');
+    if (parts[0] === 'foto' && parts[1] === 'eigen' && parts.length === 4 && parts[3] === 'pass.txt') {
+      try {
+        yearMasterPasswords[parts[2]] = fs.readFileSync(file.fullPath, 'utf8').trim();
+      } catch (e) {}
+    }
+  }
+
+  for (const file of allFiles) {
+    const parts = file.relPath.split('/');
+    
     // foto/school/...
     if (parts[0] === 'foto' && parts[1] === 'school' && parts.length >= 4) {
       const year = parts[2];
@@ -67,7 +79,7 @@ function generateManifest() {
           manifest.school[year].push(photoItem);
         }
 
-        const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+        const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
         photoItem.versions.push({
           folder: subFolder,
           backgroundName: bgTitle,
@@ -80,12 +92,22 @@ function generateManifest() {
     // foto/eigen/...
     if (parts[0] === 'foto' && parts[1] === 'eigen' && parts.length >= 4) {
       const year = parts[2];
+
+      // pass.txt op jaarniveau overslaan (al verwerkt)
+      if (parts.length === 4 && parts[3] === 'pass.txt') {
+        continue;
+      }
+
       const studentName = parts[3].replace(/_/g, ' ');
 
       if (!manifest.eigen[year]) manifest.eigen[year] = [];
       let studentObj = manifest.eigen[year].find(s => s.student === studentName);
       if (!studentObj) {
-        studentObj = { student: studentName, password: '123', photos: [] };
+        studentObj = {
+          student: studentName,
+          password: yearMasterPasswords[year] || '123',
+          photos: []
+        };
         manifest.eigen[year].push(studentObj);
       }
 
@@ -116,7 +138,7 @@ function generateManifest() {
             studentObj.photos.push(photoItem);
           }
 
-          const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+          const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
           photoItem.versions.push({
             folder: subFolder,
             backgroundName: bgTitle,
@@ -128,26 +150,26 @@ function generateManifest() {
     }
   }
 
-  const outputJs = `// Otomatik olusturulmus fotograf listesi
-// Olusturulma zamani: ${new Date().toISOString()}
+  const outputJs = `// Automatisch gegenereerde fotolijst
+// Aanmaaktijd: ${new Date().toISOString()}
 window.LOCAL_MANIFEST = ${JSON.stringify(manifest, null, 2)};
 `;
 
   fs.writeFileSync(path.join(rootDir, 'manifest.js'), outputJs, 'utf8');
-  console.log(`[OK] manifest.js guncellendi! (${new Date().toLocaleTimeString()})`);
+  console.log(`[OK] manifest.js bijgewerkt! (${new Date().toLocaleTimeString()})`);
 }
 
 generateManifest();
 
-// Watch modu
+// Watch modus
 if (process.argv.includes('--watch')) {
-  console.log("Gozetleme (Watch) modu baslatildi: 'foto' klasorundeki degisiklikler bekleniyor...");
+  console.log("Watch-modus actief: wachten op wijzigingen in de map 'foto'...");
   let timeout = null;
   fs.watch(path.join(__dirname, 'foto'), { recursive: true }, (eventType, filename) => {
     if (filename && (filename.endsWith('.tmp') || filename.startsWith('.'))) return;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      console.log(`Degisiklik algilandi (${filename}), guncelleniyor...`);
+      console.log(`Wijziging gedetecteerd (${filename}), bijwerken...`);
       generateManifest();
     }, 300);
   });

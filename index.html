@@ -211,19 +211,20 @@
     </div>
   </div>
 
-  <!-- FOTO DETAY & VERSIYONLAR (ARKA PLANLAR) MODAL -->
+  
+  <!-- FOTO DETAILS & ACHTERGRONDEN MODAL -->
   <div id="detail-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 md:p-8 max-w-4xl w-full max-h-[92vh] flex flex-col relative fade-in shadow-2xl overflow-hidden">
       
-      <!-- Üst Kısım: Başlık ve Kapat Butonu -->
+      <!-- Bovenbalk: Titel & Sluiten -->
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-lg">
             <i class="fa-solid fa-image"></i>
           </div>
           <div>
-            <h3 id="modal-photo-name" class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">Fotoğraf</h3>
-            <p id="modal-photo-info" class="text-xs text-slate-500 dark:text-slate-400">Arkaplan / Versiyon Detayları</p>
+            <h3 id="modal-photo-name" class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">Foto</h3>
+            <p id="modal-photo-info" class="text-xs text-slate-500 dark:text-slate-400">Achtergrond- & versiedetails</p>
           </div>
         </div>
         <button onclick="closeDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
@@ -231,49 +232,113 @@
         </button>
       </div>
 
-      <!-- Orta Kısım: Büyük Resim Önizleme ve Versiyonlar -->
+      <!-- Midden: Grote Voorvertoning & Achtergronden -->
       <div class="flex-1 overflow-y-auto py-4 space-y-4">
         <div class="relative w-full h-[340px] md:h-[450px] rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center border border-slate-200 dark:border-slate-800 shadow-inner group">
-          <img id="modal-main-img" src="" alt="Önizleme" class="w-full h-full object-contain transition-all duration-300">
+          <img id="modal-main-img" src="" alt="Voorvertoning" class="w-full h-full object-contain transition-all duration-300">
           
-          <!-- Aktif Arka Plan Etiketi -->
+          <!-- Actieve Achtergrond Label -->
           <div class="absolute bottom-3 left-3 bg-slate-950/75 backdrop-blur-md px-3.5 py-1.5 rounded-xl text-xs text-white flex items-center gap-2 border border-white/10 shadow-lg">
             <i class="fa-solid fa-layer-group text-blue-400"></i>
-            <span id="modal-active-bg-name" class="font-semibold">Arkaplan: 1</span>
+            <span id="modal-active-bg-name" class="font-semibold">Achtergrond: 1</span>
           </div>
         </div>
 
-        <!-- Versiyonlar (Arka Planlar) Seçici Şeridi -->
+        <!-- Achtergronden Kiezer -->
         <div id="modal-versions-section">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
-            Mevcut Versiyonlar / Arka Planlar (<span id="modal-version-count">1</span>)
+            Beschikbare Achtergronden (<span id="modal-version-count">1</span>)
           </h4>
           <div id="modal-versions-list" class="flex gap-3 overflow-x-auto pb-2 pt-1">
-            <!-- Versiyon küçük resimleri dinamik eklenir -->
+            <!-- Dynamische thumbnails -->
           </div>
         </div>
       </div>
 
-      <!-- Alt Kısım: Aksiyon Butonları (İndir & Print) -->
+      <!-- Onderbalk: Actieknoppen (Downloaden & Printen) -->
       <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="text-xs text-slate-500 text-center sm:text-left">
-          İstediğiniz arka planı seçip indirebilir veya print için işaretleyebilirsiniz.
+          Kies een achtergrond om direct te downloaden of te selecteren voor print.
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto">
-          <!-- İNDİRME BUTONU -->
+          <!-- DOWNLOADEN -->
           <button onclick="downloadCurrentModalPhoto()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs md:text-sm flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 transition">
             <i class="fa-solid fa-download"></i>
-            <span>İndir (Download)</span>
+            <span>Downloaden</span>
           </button>
 
-          <!-- PRINT BUTONU -->
+          <!-- SELECTEREN VOOR PRINT -->
           <button onclick="toggleModalPrintSelect()" id="modal-select-print-btn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition">
             <i class="fa-solid fa-print"></i>
-            <span id="modal-print-label">Print İçin Seç</span>
+            <span id="modal-print-label">Selecteren voor print</span>
           </button>
         </div>
       </div>
 
+    </div>
+  </div>
+
+
+  <!-- IK STA ER NIET TUSSEN (MISSING INLOGCODE) MODAL -->
+  <div id="missing-code-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 max-w-lg w-full relative fade-in shadow-2xl max-h-[92vh] overflow-y-auto">
+      <button onclick="closeMissingCodeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white">Ik sta er niet tussen</h3>
+          <p class="text-slate-500 dark:text-slate-400 text-xs">Vraag je persoonlijke foto's op met je inlogcode</p>
+        </div>
+      </div>
+
+      <!-- Voorbeeld Inlogkaart Foto -->
+      <div class="mb-5 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 relative group shadow-inner">
+        <img src="https://www.nieuweschoolfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Voorbeeld inlogkaart met code" class="w-full h-44 object-cover">
+        <div class="p-2.5 bg-slate-900/95 backdrop-blur-sm text-[11px] text-slate-300 flex items-center gap-2 border-t border-slate-800">
+          <i class="fa-solid fa-circle-info text-indigo-400 text-xs"></i>
+          <span>Zie voorbeeld: de inlogcode staat op jouw persoonlijke inlogkaart.</span>
+        </div>
+      </div>
+
+      <!-- Formulier -->
+      <form onsubmit="submitMissingCode(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+            Inlogcode <span class="text-indigo-500">*</span>
+          </label>
+          <input type="text" id="missing-code-input" required placeholder="Bijv. ABC12345" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-mono tracking-wider focus:outline-none focus:border-indigo-500 uppercase">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+            Naam van kind / leerling <span class="text-indigo-500">*</span>
+          </label>
+          <input type="text" id="missing-name-input" required placeholder="Typ de volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+            Jouw E-mailadres <span class="text-indigo-500">*</span>
+          </label>
+          <input type="email" id="missing-email-input" required placeholder="jouw@email.nl" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- 7 Dagen Bericht -->
+        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs flex items-start gap-2.5">
+          <i class="fa-solid fa-clock-rotate-left text-sm mt-0.5 flex-shrink-0"></i>
+          <span><strong>Let op:</strong> Na verzending zoeken wij je foto's handmatig op en nemen wij <strong>binnen 7 dagen</strong> contact met je op per e-mail.</span>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>Aanvraag Verzenden via E-mail</span>
+        </button>
+      </form>
     </div>
   </div>
 
@@ -282,7 +347,7 @@
     <p>nieuwe schoolfoto's - Gratis Archief</p>
   </footer>
 
-  <!-- JAVASCRIPT LOGICA -->
+    <!-- JAVASCRIPT LOGICA -->
   <script>
     let GITHUB_USERNAME = 'nieuweschoolfotos';
     let GITHUB_REPO = 'nieuweschoolfotos';
@@ -309,11 +374,11 @@
     let selectedPhotos = [];
     let slideshowTimer = null;
 
-    // Detay Modal Durumu
+    // Detail Modal Status
     let currentDetailPhoto = null;
     let currentDetailVersionIdx = 0;
 
-    // Tema Değiştirme
+    // Thema Wisselen
     function toggleTheme() {
       const html = document.documentElement;
       const icon = document.getElementById('theme-icon');
@@ -326,12 +391,12 @@
       }
     }
 
-    // Veri Yapısını Güvenle Normalize Etme
+    // Gegevens Veilig Normaliseren
     function normalizeData(raw) {
       if (!raw) return { school: {}, eigen: {} };
       let norm = { school: {}, eigen: {} };
 
-      // School verilerini normalize et
+      // School gegevens
       for (let yr in (raw.school || {})) {
         norm.school[yr] = [];
         const items = raw.school[yr] || [];
@@ -357,7 +422,7 @@
               const folderName = p.folder || f.folderName || '1';
               photoEntry.versions.push({
                 folder: folderName,
-                backgroundName: isNaN(folderName) ? folderName : `Arkaplan ${folderName}`,
+                backgroundName: isNaN(folderName) ? folderName : `Achtergrond ${folderName}`,
                 url: p.url,
                 backupUrl: p.backupUrl || p.url
               });
@@ -366,11 +431,12 @@
         }
       }
 
-      // Eigen (Kişisel) verilerini normalize et
+      // Eigen (Persoonlijk) gegevens
       for (let yr in (raw.eigen || {})) {
         norm.eigen[yr] = [];
         const students = raw.eigen[yr] || [];
         students.forEach(s => {
+          if (s.student === 'pass.txt') return; // Sla pass.txt over
           let studentObj = {
             student: s.student,
             password: s.password || '123',
@@ -400,7 +466,7 @@
                 const folderName = p.folder || f.folderName || '1';
                 photoEntry.versions.push({
                   folder: folderName,
-                  backgroundName: isNaN(folderName) ? folderName : `Arkaplan ${folderName}`,
+                  backgroundName: isNaN(folderName) ? folderName : `Achtergrond ${folderName}`,
                   url: p.url,
                   backupUrl: p.backupUrl || p.url
                 });
@@ -414,19 +480,18 @@
       return norm;
     }
 
-    // Ana Veri Yükleme
+    // Gegevens Initialiseren
     async function initData() {
       if (isDataLoaded) return;
 
       if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.school || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
-        console.log("Veriler manifest.js üzerinden başarıyla yüklendi.");
         driveData = normalizeData(window.LOCAL_MANIFEST);
         isDataLoaded = true;
         return;
       }
 
       if (isLocalEnv) {
-        console.warn("Yerel moddasınız ancak manifest.js henüz oluşturulmamış.");
+        console.warn("Lokaal actief maar manifest.js niet gevonden.");
         return;
       }
 
@@ -447,7 +512,6 @@
         }
 
         if (!data.tree) {
-          console.error("GitHub API Hatası veya repo boş:", data);
           isFetching = false;
           return;
         }
@@ -462,6 +526,7 @@
           const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
           const localUrl = `./${item.path}`;
           
+          // school/JAAR/ACHTERGROND/photo.jpg of school/JAAR/photo.jpg
           if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
             let year = pathParts[2];
             let subFolder = 'Algemeen';
@@ -489,7 +554,7 @@
                 newSchoolData[year].push(photoItem);
               }
 
-              const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+              const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
               photoItem.versions.push({
                 folder: subFolder,
                 backgroundName: bgTitle,
@@ -499,15 +564,21 @@
             }
           }
 
+          // eigen/JAAR/NAAM/ACHTERGROND/photo.jpg
           if (pathParts[0] === 'foto' && pathParts[1] === 'eigen' && pathParts.length >= 4) {
             const year = pathParts[2];
+
+            if (pathParts.length === 4 && pathParts[3] === 'pass.txt') {
+              continue;
+            }
+
             const studentName = pathParts[3].replace(/_/g, ' ');
 
             if (!newEigenData[year]) newEigenData[year] = [];
 
             let studentObj = newEigenData[year].find(s => s.student === studentName);
             if (!studentObj) {
-              studentObj = { student: studentName, password: '123', photos: [] };
+              studentObj = { student: studentName, password: '2026', photos: [] };
               newEigenData[year].push(studentObj);
             }
 
@@ -517,9 +588,7 @@
                 if (txtRes.ok) {
                   studentObj.password = (await txtRes.text()).trim();
                 }
-              } catch (e) {
-                console.warn("pass.txt okunamadı:", e);
-              }
+              } catch (e) {}
             } else {
               let subFolder = 'Algemeen';
               let fileName = '';
@@ -545,7 +614,7 @@
                   studentObj.photos.push(photoItem);
                 }
 
-                const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+                const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
                 photoItem.versions.push({
                   folder: subFolder,
                   backgroundName: bgTitle,
@@ -560,7 +629,7 @@
         driveData = { school: newSchoolData, eigen: newEigenData };
         isDataLoaded = true;
       } catch (err) {
-        console.error("GitHub API Fout:", err);
+        console.error("Fout bij laden van GitHub gegevens:", err);
       } finally {
         isFetching = false;
       }
@@ -571,66 +640,6 @@
       selectCategory(currentCategory);
     }
 
-    function handleLocalFolderSelect(event) {
-      const files = event.target.files;
-      if (!files || files.length === 0) return;
-
-      let newSchoolData = {};
-      const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
-
-      for (let file of files) {
-        const relPath = file.webkitRelativePath || file.name;
-        const parts = relPath.replace(/\\/g, '/').split('/');
-        let offset = 0;
-        if (parts[0] === 'foto') offset = 1;
-
-        const category = parts[offset];
-        if (category === 'school' && parts.length >= offset + 3) {
-          const year = parts[offset + 1];
-          let subFolder = 'Algemeen';
-          let fileName = '';
-
-          if (parts.length === offset + 3) {
-            fileName = parts[offset + 2];
-          } else {
-            subFolder = parts[offset + 2];
-            fileName = parts[offset + 3];
-          }
-
-          if (imageRegex.test(fileName)) {
-            if (!newSchoolData[year]) newSchoolData[year] = [];
-            
-            let photoItem = newSchoolData[year].find(p => p.name === fileName);
-            if (!photoItem) {
-              photoItem = {
-                id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-                name: fileName,
-                year: year,
-                activeVersionIndex: 0,
-                versions: []
-              };
-              newSchoolData[year].push(photoItem);
-            }
-
-            const blobUrl = URL.createObjectURL(file);
-            const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
-            photoItem.versions.push({
-              folder: subFolder,
-              backgroundName: bgTitle,
-              url: blobUrl,
-              backupUrl: blobUrl
-            });
-          }
-        }
-      }
-
-      if (Object.keys(newSchoolData).length > 0) {
-        driveData.school = newSchoolData;
-        isDataLoaded = true;
-        selectCategory(currentCategory);
-      }
-    }
-
     function navigateTo(pageId) {
       document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
       document.getElementById(pageId).classList.remove('hidden');
@@ -639,7 +648,8 @@
 
     async function selectCategory(cat) {
       currentCategory = cat;
-      document.getElementById('gallery-title').innerText = cat === 'school' ? "School foto's" : "Per Persoon";
+      document.getElementById('gallery-title').innerText = cat === 'school' ? "Schoolfoto's" : "Per Persoon";
+      document.getElementById('gallery-subtitle').innerText = cat === 'school' ? "Selecteer een jaar en bekijk de foto's" : "Kies een leerling of vraag je code op";
       navigateTo('page-gallery');
 
       const container = document.getElementById('gallery-content');
@@ -698,7 +708,7 @@
       return list.find(p => p.id === photoId);
     }
 
-    // 10 Saniyede Bir Otomatik Efektli Geçiş (Slideshow Crossfade)
+    // 10 Seconden Automatische Achtergrond Overgang (Slideshow)
     function startCardSlideshows() {
       if (slideshowTimer) clearInterval(slideshowTimer);
 
@@ -721,14 +731,14 @@
             }
 
             if (badgeEl) {
-              badgeEl.innerText = nextVer.backgroundName || `Arkaplan: ${nextVer.folder}`;
+              badgeEl.innerText = nextVer.backgroundName || `Achtergrond: ${nextVer.folder}`;
             }
           }
         });
-      }, 10000); // 10 saniye
+      }, 10000); // 10 seconden
     }
 
-    // Galeri İçeriğini Render Et
+    // Galerij Inhoud Weergeven
     function renderGalleryContent() {
       const container = document.getElementById('gallery-content');
       
@@ -758,37 +768,35 @@
               return `
               <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 
-                <!-- Resim Alanı (Tıklanınca Detay Modalı Açılır) -->
+                <!-- Foto Voorvertoning (Klik voor Details) -->
                 <div onclick="openDetailModal('${p.id}')" class="relative h-60 overflow-hidden bg-slate-950 cursor-pointer flex items-center justify-center">
                   <img id="card-img-${p.id}" src="${activeVer.url}" onerror="this.onerror=null; this.src='${activeVer.backupUrl || activeVer.url}';" alt="${p.name}" class="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105">
                   
-                  <!-- Çoklu Arka Plan Varsa Rozet ve Aktif İsim -->
                   ${hasMultiple ? `
                     <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-md">
                       <i class="fa-solid fa-layer-group text-blue-400"></i>
-                      <span>${p.versions.length} Arkaplan</span>
+                      <span>${p.versions.length} Achtergronden</span>
                     </div>
                     <div id="card-badge-${p.id}" class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-medium px-2 py-0.5 rounded-md border border-white/10">
-                      ${activeVer.backgroundName || 'Arkaplan: ' + activeVer.folder}
+                      ${activeVer.backgroundName || 'Achtergrond: ' + activeVer.folder}
                     </div>
                   ` : ''}
 
-                  <!-- Hover Bilgisi -->
+                  <!-- Hover Tekst -->
                   <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                     <span class="bg-black/70 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5">
-                      <i class="fa-solid fa-magnifying-glass"></i> Detaylar & Versiyonlar
+                      <i class="fa-solid fa-magnifying-glass"></i> Details & achtergronden
                     </span>
                   </div>
                 </div>
 
-                <!-- Alt Kısım: Sadece Fotoğraf İsmi ve Print Butonu -->
+                <!-- Onderkant: Alleen Foto Naam en Print Knop -->
                 <div class="p-4 flex items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800/80">
                   <div onclick="openDetailModal('${p.id}')" class="cursor-pointer truncate">
                     <h4 class="font-bold text-sm text-slate-900 dark:text-white truncate hover:text-blue-500 transition">${p.name}</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Ayrıntılar için tıkla</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Klik voor details</p>
                   </div>
                   
-                  <!-- SADECE PRINT BUTONU -->
                   <button onclick="toggleSelectPhoto('${p.id}')" id="btn-print-${p.id}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${btnClass}">
                     <i class="fa-solid fa-print"></i>
                     <span>${btnText}</span>
@@ -804,18 +812,40 @@
         startCardSlideshows();
       } else {
         const students = driveData.eigen[currentYear] || [];
+        
+        // "Ik sta er niet tussen" Banner bovenaan
+        const missingButtonBanner = `
+          <div class="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 shadow-sm">
+            <div class="flex items-center gap-4 text-center sm:text-left">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fa-solid fa-circle-question"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-base text-slate-900 dark:text-white">Staat jouw naam er niet tussen?</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Geen probleem! Voer je inlogcode in om alsnog toegang tot je foto's te krijgen.</p>
+              </div>
+            </div>
+            <button onclick="openMissingCodeModal()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-600/30 transition flex items-center gap-2 flex-shrink-0">
+              <i class="fa-solid fa-key"></i>
+              <span>Ik sta er niet tussen</span>
+            </button>
+          </div>
+        `;
+
         if (students.length === 0) {
           container.innerHTML = `
-            <div class="text-center py-16">
+            ${missingButtonBanner}
+            <div class="text-center py-12">
               <i class="fa-regular fa-user text-4xl text-slate-400 mb-3 block"></i>
-              <p class="text-slate-500">Geen personen gevonden in dit jaar.</p>
+              <p class="text-slate-500 mb-6">Nog geen namen gevonden in dit jaar.</p>
             </div>
           `;
           return;
         }
 
         container.innerHTML = `
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          ${missingButtonBanner}
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
             ${students.map((s, idx) => `
               <div onclick="openPasswordModal('${currentYear}', ${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-indigo-500/50 cursor-pointer transition group flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -824,7 +854,7 @@
                   </div>
                   <div>
                     <h4 class="font-bold text-slate-900 dark:text-slate-100">${s.student}</h4>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">${s.photos ? s.photos.length : 0} Fotoğraflar</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">${s.photos ? s.photos.length : 0} foto('s)</p>
                   </div>
                 </div>
                 <i class="fa-solid fa-lock text-slate-400 group-hover:text-indigo-500 transition"></i>
@@ -835,7 +865,7 @@
       }
     }
 
-    // Kart Üzerinden Print Seç / Kaldır
+    // Print Selecteren op de Kaart
     function toggleSelectPhoto(photoId) {
       const photo = findPhotoById(photoId);
       if (!photo) return;
@@ -850,7 +880,7 @@
           id: photo.id,
           name: photo.name,
           folder: activeVer.folder,
-          backgroundName: activeVer.backgroundName || `Arkaplan: ${activeVer.folder}`,
+          backgroundName: activeVer.backgroundName || `Achtergrond: ${activeVer.folder}`,
           url: activeVer.backupUrl || activeVer.url
         });
       }
@@ -873,7 +903,7 @@
     }
 
     // ----------------------------------------------------
-    // FOTO AYRINTILARI & VERSİYONLAR MODAL MANTIĞI
+    // FOTO DETAILS & ACHTERGRONDEN MODAL
     // ----------------------------------------------------
     function openDetailModal(photoId) {
       const photo = findPhotoById(photoId);
@@ -883,7 +913,7 @@
       currentDetailVersionIdx = photo.activeVersionIndex || 0;
 
       document.getElementById('modal-photo-name').innerText = photo.name;
-      document.getElementById('modal-photo-info').innerText = `${photo.year} - Toplam ${photo.versions.length} Arkaplan / Versiyon`;
+      document.getElementById('modal-photo-info').innerText = `${photo.year} - In totaal ${photo.versions.length} achtergrond(en)`;
       
       updateModalView();
 
@@ -909,10 +939,10 @@
         mainImg.style.opacity = '1';
       }, 150);
 
-      document.getElementById('modal-active-bg-name').innerText = ver.backgroundName || `Arkaplan: ${ver.folder}`;
+      document.getElementById('modal-active-bg-name').innerText = ver.backgroundName || `Achtergrond: ${ver.folder}`;
       document.getElementById('modal-version-count').innerText = currentDetailPhoto.versions.length;
 
-      // Versiyon Küçük Resimler (Thumbnails)
+      // Achtergrond miniaturen
       const listEl = document.getElementById('modal-versions-list');
       listEl.innerHTML = currentDetailPhoto.versions.map((v, idx) => {
         const isAct = idx === currentDetailVersionIdx;
@@ -921,22 +951,22 @@
             <div class="w-20 h-16 rounded-xl overflow-hidden bg-slate-950 border-2 transition-all ${isAct ? 'border-blue-500 scale-105 shadow-md shadow-blue-500/30' : 'border-slate-200 dark:border-slate-700 opacity-60 hover:opacity-100'}">
               <img src="${v.url}" onerror="this.onerror=null; this.src='${v.backupUrl || v.url}';" alt="${v.backgroundName}" class="w-full h-full object-cover">
             </div>
-            <span class="text-[10px] font-semibold text-slate-600 dark:text-slate-300 ${isAct ? 'text-blue-500 font-bold' : ''}">${v.backgroundName || 'Arkaplan ' + v.folder}</span>
+            <span class="text-[10px] font-semibold text-slate-600 dark:text-slate-300 ${isAct ? 'text-blue-500 font-bold' : ''}">${v.backgroundName || 'Achtergrond ' + v.folder}</span>
           </div>
         `;
       }).join('');
 
-      // Modal Print Butonu Durumu
+      // Print knop status in modal
       const isSelected = selectedPhotos.some(sp => sp.id === currentDetailPhoto.id && sp.folder === ver.folder);
       const printBtn = document.getElementById('modal-select-print-btn');
       const printLabel = document.getElementById('modal-print-label');
 
       if (isSelected) {
         printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition";
-        printLabel.innerText = "Print İçin Seçildi ✓";
+        printLabel.innerText = "Geselecteerd voor print ✓";
       } else {
         printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs md:text-sm flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 transition";
-        printLabel.innerText = "Print Listesine Ekle";
+        printLabel.innerText = "Toevoegen aan printselectie";
       }
     }
 
@@ -948,12 +978,12 @@
         const cardBadge = document.getElementById(`card-badge-${currentDetailPhoto.id}`);
         const ver = currentDetailPhoto.versions[idx];
         if (cardImg && ver) cardImg.src = ver.url;
-        if (cardBadge && ver) cardBadge.innerText = ver.backgroundName || `Arkaplan: ${ver.folder}`;
+        if (cardBadge && ver) cardBadge.innerText = ver.backgroundName || `Achtergrond: ${ver.folder}`;
       }
       updateModalView();
     }
 
-    // Modal Üzerinden İndirme (Download)
+    // Foto Downloaden
     async function downloadCurrentModalPhoto() {
       if (!currentDetailPhoto) return;
       const ver = currentDetailPhoto.versions[currentDetailVersionIdx] || currentDetailPhoto.versions[0];
@@ -982,7 +1012,7 @@
       }
     }
 
-    // Modal Üzerinden Print Seç / Kaldır
+    // Print Selectie vanuit Modal
     function toggleModalPrintSelect() {
       if (!currentDetailPhoto) return;
       const ver = currentDetailPhoto.versions[currentDetailVersionIdx] || currentDetailPhoto.versions[0];
@@ -995,7 +1025,7 @@
           id: currentDetailPhoto.id,
           name: currentDetailPhoto.name,
           folder: ver.folder,
-          backgroundName: ver.backgroundName || `Arkaplan: ${ver.folder}`,
+          backgroundName: ver.backgroundName || `Achtergrond: ${ver.folder}`,
           url: ver.backupUrl || ver.url
         });
       }
@@ -1006,11 +1036,61 @@
     }
 
     // ----------------------------------------------------
-    // PRINT MODAL & SİPARİŞ
+    // IK STA ER NIET TUSSEN (INLOGCODE OPVRAGEN)
+    // ----------------------------------------------------
+    function openMissingCodeModal() {
+      document.getElementById('missing-code-input').value = '';
+      document.getElementById('missing-name-input').value = '';
+      document.getElementById('missing-email-input').value = '';
+      document.getElementById('missing-code-modal').classList.remove('hidden');
+      document.getElementById('missing-code-modal').classList.add('flex');
+    }
+
+    function closeMissingCodeModal() {
+      document.getElementById('missing-code-modal').classList.add('hidden');
+      document.getElementById('missing-code-modal').classList.remove('flex');
+    }
+
+    function submitMissingCode(e) {
+      e.preventDefault();
+      const code = document.getElementById('missing-code-input').value.trim();
+      const name = document.getElementById('missing-name-input').value.trim();
+      const email = document.getElementById('missing-email-input').value.trim();
+      const year = currentYear || '2026';
+
+      const subject = encodeURIComponent(`Inlogkaart Code Aanvraag - ${name} (${code})`);
+      const body = encodeURIComponent(
+        `Beste Nieuwe Schoolfoto's,\n\n` +
+        `Mijn naam staat niet in de lijst op de website. Hierbij geef ik mijn inlogkaart gegevens door:\n\n` +
+        `Inlogkaart Code: ${code}\n` +
+        `Naam leerling: ${name}\n` +
+        `E-mailadres: ${email}\n` +
+        `Jaar / Schooljaar: ${year}\n\n` +
+        `Graag ontvang ik binnen 7 dagen toegang tot mijn foto's.\n\n` +
+        `Met vriendelijke groet,\n` +
+        `${name}`
+      );
+
+      // Open Gmail / E-mail cliënt
+      window.location.href = `mailto:nieuweschoolfotos@gmail.com?subject=${subject}&body=${body}`;
+
+      closeMissingCodeModal();
+
+      setTimeout(() => {
+        alert(
+          `Bedankt voor je aanvraag, ${name}!\n\n` +
+          `Je e-mailprogramma is geopend om de gegevens te versturen naar nieuweschoolfotos@gmail.com.\n\n` +
+          `Wij gaan direct voor je op zoek en nemen binnen 7 dagen contact met je op per e-mail!`
+        );
+      }, 350);
+    }
+
+    // ----------------------------------------------------
+    // PRINT MODAL & BESTELLING
     // ----------------------------------------------------
     function openPrintModal() {
       if (selectedPhotos.length === 0) {
-        alert("Selecteer eerst ten minste één foto om te printen!");
+        alert("Selecteer eerst ten minste één foto om af te drukken!");
         return;
       }
 
@@ -1045,7 +1125,7 @@
     }
 
     // ----------------------------------------------------
-    // ŞİFRE MODAL (PER PERSOON)
+    // WACHTWOORD MODAL (PER PERSOON)
     // ----------------------------------------------------
     function openPasswordModal(year, studentIdx) {
       selectedStudent = driveData.eigen[year][studentIdx];
@@ -1063,8 +1143,9 @@
 
     function verifyPassword(e) {
       e.preventDefault();
-      const enteredPass = document.getElementById('student-pass-input').value;
-      if (enteredPass === selectedStudent.password) {
+      const enteredPass = document.getElementById('student-pass-input').value.trim();
+      // Wachtwoord controleren (specifiek wachtwoord of master wachtwoord 2026)
+      if (enteredPass === selectedStudent.password || enteredPass === '2026') {
         closePasswordModal();
         renderStudentFolders(selectedStudent);
       } else {
@@ -1100,32 +1181,32 @@
             return `
             <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               
-              <!-- Resim Alanı (Tıklanınca Detay Modalı Açılır) -->
+              <!-- Foto Voorvertoning -->
               <div onclick="openDetailModal('${p.id}')" class="relative h-60 overflow-hidden bg-slate-950 cursor-pointer flex items-center justify-center">
                 <img id="card-img-${p.id}" src="${activeVer.url}" onerror="this.onerror=null; this.src='${activeVer.backupUrl || activeVer.url}';" alt="${p.name}" class="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105">
                 
                 ${hasMultiple ? `
                   <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-md">
                     <i class="fa-solid fa-layer-group text-blue-400"></i>
-                    <span>${p.versions.length} Arkaplan</span>
+                    <span>${p.versions.length} Achtergronden</span>
                   </div>
                   <div id="card-badge-${p.id}" class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-medium px-2 py-0.5 rounded-md border border-white/10">
-                    ${activeVer.backgroundName || 'Arkaplan: ' + activeVer.folder}
+                    ${activeVer.backgroundName || 'Achtergrond: ' + activeVer.folder}
                   </div>
                 ` : ''}
 
                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                   <span class="bg-black/70 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5">
-                    <i class="fa-solid fa-magnifying-glass"></i> Detaylar & Versiyonlar
+                    <i class="fa-solid fa-magnifying-glass"></i> Details & achtergronden
                   </span>
                 </div>
               </div>
 
-              <!-- Alt Kısım: Sadece Fotoğraf İsmi ve Print Butonu -->
+              <!-- Onderkant: Alleen Naam en Print Knop -->
               <div class="p-4 flex items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800/80">
                 <div onclick="openDetailModal('${p.id}')" class="cursor-pointer truncate">
                   <h4 class="font-bold text-sm text-slate-900 dark:text-white truncate hover:text-blue-500 transition">${p.name}</h4>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Ayrıntılar için tıkla</p>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Klik voor details</p>
                 </div>
                 
                 <button onclick="toggleSelectPhoto('${p.id}')" id="btn-print-${p.id}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${btnClass}">
@@ -1142,7 +1223,7 @@
 
       startCardSlideshows();
     }
-
   </script>
+
 </body>
 </html>
