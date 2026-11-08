@@ -55,16 +55,24 @@ function generateManifest() {
 
       if (imageRegex.test(fileName)) {
         if (!manifest.school[year]) manifest.school[year] = [];
-        let folderObj = manifest.school[year].find(f => f.folderName === subFolder);
-        if (!folderObj) {
-          folderObj = { folderName: subFolder, photos: [] };
-          manifest.school[year].push(folderObj);
+        
+        let photoItem = manifest.school[year].find(p => p.name === fileName);
+        if (!photoItem) {
+          photoItem = {
+            id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+            name: fileName,
+            year: year,
+            versions: []
+          };
+          manifest.school[year].push(photoItem);
         }
-        folderObj.photos.push({
-          name: fileName,
+
+        const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+        photoItem.versions.push({
+          folder: subFolder,
+          backgroundName: bgTitle,
           url: `./${file.relPath}`,
-          backupUrl: `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${file.relPath}`,
-          folder: subFolder
+          backupUrl: `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${file.relPath}`
         });
       }
     }
@@ -77,7 +85,7 @@ function generateManifest() {
       if (!manifest.eigen[year]) manifest.eigen[year] = [];
       let studentObj = manifest.eigen[year].find(s => s.student === studentName);
       if (!studentObj) {
-        studentObj = { student: studentName, password: '123', folders: [] };
+        studentObj = { student: studentName, password: '123', photos: [] };
         manifest.eigen[year].push(studentObj);
       }
 
@@ -96,16 +104,24 @@ function generateManifest() {
         }
 
         if (imageRegex.test(fileName)) {
-          let folderGroup = studentObj.folders.find(f => f.folderName === subFolder);
-          if (!folderGroup) {
-            folderGroup = { folderName: subFolder, photos: [] };
-            studentObj.folders.push(folderGroup);
+          let photoItem = studentObj.photos.find(p => p.name === fileName);
+          if (!photoItem) {
+            photoItem = {
+              id: `eigen_${year}_${studentName}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+              name: fileName,
+              year: year,
+              student: studentName,
+              versions: []
+            };
+            studentObj.photos.push(photoItem);
           }
-          folderGroup.photos.push({
-            name: fileName,
+
+          const bgTitle = isNaN(subFolder) ? subFolder : `Arkaplan ${subFolder}`;
+          photoItem.versions.push({
+            folder: subFolder,
+            backgroundName: bgTitle,
             url: `./${file.relPath}`,
-            backupUrl: `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${file.relPath}`,
-            folder: subFolder
+            backupUrl: `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${file.relPath}`
           });
         }
       }
