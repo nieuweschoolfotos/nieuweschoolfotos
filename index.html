@@ -634,7 +634,7 @@
 
     async function selectCategory(cat) {
       currentCategory = cat;
-      isDataLoaded = false; // Her kategori seçiminde veya sayfaya girişte verileri tazele
+      isDataLoaded = false; 
       await initData();
 
       navigateTo('page-gallery');
@@ -690,8 +690,8 @@
         return;
       }
 
-      // Cache buster ekleyerek her sayfa yenilendiğinde fotoğrafların taze gelmesini sağlıyoruz
-      const cacheBuster = `?v=${new Date().getTime()}`;
+      // KESİN ÇÖZÜM: Tamamen rastgele bir sayı üreterek tarayıcının önbellekte tutmasını engelliyoruz
+      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
       if (currentCategory === 'school') {
         if (data.length === 0) {
@@ -880,7 +880,7 @@
       const listContainer = document.getElementById('modal-versions-list');
       if (!currentDetailPhoto) return;
 
-      const cacheBuster = `?v=${new Date().getTime()}`;
+      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
       listContainer.innerHTML = currentDetailPhoto.versions.map((ver, idx) => `
         <div onclick="switchModalVersion(${idx})" class="w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition shrink-0 relative ${
@@ -904,7 +904,7 @@
     function updateModalMainImage() {
       if (!currentDetailPhoto) return;
       const ver = currentDetailPhoto.versions[currentDetailVersionIdx];
-      const cacheBuster = `?v=${new Date().getTime()}`;
+      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
       
       document.getElementById('modal-main-img').src = `${ver.url}${cacheBuster}`;
       document.getElementById('modal-active-bg-name').innerText = ver.backgroundName;
