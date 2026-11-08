@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="nl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nieuwe schoolfoto's - Gratis Archief</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 transition-colors duration-300 selection:bg-blue-500 selection:text-white">
+
+  <!-- BOVENBALK & NAVBAR -->
+  <header class="w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      
+      <!-- LOGO -->
+      <div onclick="navigateTo('page-home')" class="cursor-pointer flex items-center space-x-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
+          <i class="fa-solid fa-unlock-keyhole text-white text-lg"></i>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
+          nieuwe schoolfoto's
+        </span>
+      </div>
+
+      <!-- SAĞ ÜST: TEMA VE PRINT BUTONLARI -->
+      <div class="flex items-center space-x-3">
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-yellow-400 transition" title="Thema wisselen">
+          <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+        </button>
+
+        <button onclick="openPrintModal()" class="text-xs md:text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
+          <i class="fa-solid fa-print"></i>
+          <span>Selectie Printen (<span id="selected-count">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOOFDPAGINA INHOUD -->
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full flex flex-col justify-center">
+
+    <!-- PAGINA 1: HOME -->
+    <section id="page-home" class="fade-in text-center py-16 flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-8">
+        <i class="fa-solid fa-bolt"></i> GitHub Live Koppeling Actief
+      </div>
+      
+      <h1 class="text-4xl md:text-6xl font-black tracking-tight max-w-3xl leading-tight mb-6">
+        Schoolfoto's <span class="bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">gratis bekijken</span> & bestellen
+      </h1>
+      
+      <p class="text-slate-600 dark:text-slate-400 text-lg max-w-xl mb-10 leading-relaxed">
+        Kies hieronder je categorie, selecteer de gewenste foto's en stuur direct een printaanvraag!
+      </p>
+
+      <button onclick="navigateTo('page-selection')" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-lg rounded-2xl shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-105 transition-all duration-200 flex items-center gap-3">
+        <span>Starten</span>
+        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+      </button>
+    </section>
+
+    <!-- PAGINA 2: KEUZESCHERM -->
+    <section id="page-selection" class="hidden fade-in py-8">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-extrabold mb-3">Maak een keuze</h2>
+        <p class="text-slate-600 dark:text-slate-400">Wat wil je bekijken?</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
+          <div class="w-20 h-20 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-3xl mb-6 group-hover:scale-110 transition">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3">School foto's</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Alle schoolfoto's per jaar, gratis te bekijken en printen.</p>
+          <span class="text-blue-500 font-semibold text-sm flex items-center gap-2 group-hover:translate-x-1 transition">
+            Bekijken <i class="fa-solid fa-chevron-right text-xs"></i>
+          </span>
+        </div>
+
+        <div onclick="selectCategory('eigen')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-indigo-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
+          <div class="w-20 h-20 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 text-3xl mb-6 group-hover:scale-110 transition">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3">Per Persoon</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Persoonlijke mappen openen met je inlogkaart code.</p>
+          <span class="text-indigo-500 font-semibold text-sm flex items-center gap-2 group-hover:translate-x-1 transition">
+            Inloggen <i class="fa-solid fa-chevron-right text-xs"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <button onclick="navigateTo('page-home')" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm font-medium">
+          <i class="fa-solid fa-arrow-left mr-2"></i> Terug naar home
+        </button>
+      </div>
+    </section>
+
+    <!-- PAGINA 3: GALERIJ & JAREN BALK -->
+    <section id="page-gallery" class="hidden fade-in">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+        <div class="flex items-center gap-4">
+          <button onclick="navigateTo('page-selection')" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <div>
+            <h2 id="gallery-title" class="text-2xl font-bold">School foto's</h2>
+            <p id="gallery-subtitle" class="text-slate-500 dark:text-slate-400 text-xs">Selecteer een jaar</p>
+          </div>
+        </div>
+        <div id="years-bar" class="flex gap-2 overflow-x-auto pb-2 md:pb-0"></div>
+      </div>
+      <div id="gallery-content" class="min-h-[300px]"></div>
+    </section>
+
+  </main>
+
+  <!-- PRINT / BESTEL MODAL -->
+  <div id="print-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 max-w-lg w-full relative fade-in">
+      <button onclick="closePrintModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-print"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Foto's Printen / Bestellen</h3>
+          <p class="text-slate-500 dark:text-slate-400 text-xs">Vul je gegevens in en verzend de aanvraag</p>
+        </div>
+      </div>
+
+      <form onsubmit="submitPrintOrder(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Jouw Naam</label>
+          <input type="text" id="order-name" required placeholder="Typ je volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Papierformaat / Type</label>
+          <select id="order-paper-type" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
+            <option value="Fotopapier (Glanzend)">Fotopapier (Glanzend)</option>
+            <option value="A4 Standaard Papier">A4 Standaard Papier</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Geselecteerde Foto's</label>
+          <div id="order-selected-list" class="max-h-36 overflow-y-auto bg-slate-100 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs space-y-2"></div>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>Aanvraag Verzenden naar E-mail</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- WACHTWOORD MODAL -->
+  <div id="password-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 max-w-sm w-full relative fade-in">
+      <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-32 h-20 rounded-xl overflow-hidden border border-indigo-500/30 mx-auto mb-4 shadow-md bg-slate-950 flex items-center justify-center">
+          <img src="https://www.nieuweschoolfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Inlogkaart" class="w-full h-full object-cover">
+        </div>
+        <h3 id="pass-student-name" class="text-xl font-bold">Persoon</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-xs">Voer het wachtwoord in</p>
+      </div>
+
+      <form onsubmit="verifyPassword(event)" class="space-y-4">
+        <div>
+          <input type="password" id="student-pass-input" required placeholder="Wachtwoord..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm text-center tracking-widest focus:outline-none focus:border-indigo-500">
+          <p id="pass-error" class="text-red-400 text-xs mt-2 hidden text-center">Onjuiste code!</p>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition">
+          Openen
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="w-full border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500">
+    <p>nieuwe schoolfoto's - Gratis Archief</p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGICA -->
+  <script>
+    const GITHUB_USERNAME = 'tolgaoruc2016';
+    const GITHUB_REPO = 'nieuwe-schoolfotos';
+    const BRANCH = 'main';
+
+    let driveData = { school: {}, eigen: {} };
+    let currentCategory = 'school';
+    let currentYear = '';
+    let selectedStudent = null;
+    let selectedPhotos = [];
+
+    // Tema Değiştirme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        icon.className = "fa-solid fa-sun text-lg text-amber-500";
+      } else {
+        html.classList.add('dark');
+        icon.className = "fa-solid fa-moon text-lg text-yellow-400";
+      }
+    }
+
+    async function fetchGitHubData() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1`);
+        const data = await res.json();
+        if (!data.tree) return;
+
+        let newSchoolData = {};
+        let newEigenData = {};
+
+        for (let item of data.tree) {
+          const pathParts = item.path.split('/');
+          
+          // school/JAAR/ARKAPLAN/photo.jpg (Doğrudan yılın altında arka plan klasörü ve foto)
+          if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 5) {
+            const year = pathParts[2];
+            const subFolder = pathParts[3];  // Örn: 1 (Arka plan)
+            const fileName = pathParts[4];   // Örn: 1.jpg
+            
+            if (!newSchoolData[year]) newSchoolData[year] = [];
+            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
+            
+            let folderObj = newSchoolData[year].find(f => f.folderName === subFolder);
+            if (!folderObj) {
+              folderObj = { folderName: subFolder, photos: [] };
+              newSchoolData[year].push(folderObj);
+            }
+
+            if (fileName && fileName !== 'pass.txt') {
+              folderObj.photos.push({ name: fileName, url: rawUrl, folder: subFolder });
+            }
+          }
+
+          // eigen/JAAR/NAAM/ARKAPLAN/photo.jpg
+          if (pathParts[0] === 'foto' && pathParts[1] === 'eigen' && pathParts.length >= 5) {
+            const year = pathParts[2];
+            const studentName = pathParts[3].replace(/_/g, ' ');
+            const subFolder = pathParts[4];
+
+            if (!newEigenData[year]) newEigenData[year] = [];
+
+            let studentObj = newEigenData[year].find(s => s.student === studentName);
+            if (!studentObj) {
+              studentObj = { student: studentName, password: '123', folders: [] };
+              newEigenData[year].push(studentObj);
+            }
+
+            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
+
+            if (pathParts[4] === 'pass.txt') {
+              const txtRes = await fetch(rawUrl);
+              studentObj.password = (await txtRes.text()).trim();
+            } else if (pathParts.length >= 6 && pathParts[5]) {
+              const actualSubFolder = pathParts[4];
+              const fileName = pathParts[5];
+
+              let folderGroup = studentObj.folders.find(f => f.folderName === actualSubFolder);
+              if (!folderGroup) {
+                folderGroup = { folderName: actualSubFolder, photos: [] };
+                studentObj.folders.push(folderGroup);
+              }
+              folderGroup.photos.push({ name: fileName, url: rawUrl, folder: actualSubFolder });
+            }
+          }
+        }
+
+        driveData.school = newSchoolData;
+        driveData.eigen = newEigenData;
+      } catch (err) {
+        console.error("GitHub API Fout:", err);
+      }
+    }
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    async function selectCategory(cat) {
+      currentCategory = cat;
+      await fetchGitHubData();
+      const years = Object.keys(driveData[cat]);
+      currentYear = years.length > 0 ? years[years.length - 1] : '';
+      
+      document.getElementById('gallery-title').innerText = cat === 'school' ? "School foto's" : "Per Persoon";
+      renderYearsBar();
+      renderGalleryContent();
+      navigateTo('page-gallery');
+    }
+
+    function renderYearsBar() {
+      const yearsContainer = document.getElementById('years-bar');
+      const years = Object.keys(driveData[currentCategory]);
+      if (years.length === 0) {
+        yearsContainer.innerHTML = `<span class="text-xs text-slate-500">Geen jaren gevonden.</span>`;
+        return;
+      }
+      yearsContainer.innerHTML = years.map(yr => `
+        <button onclick="changeYear('${yr}')" class="px-4 py-1.5 rounded-xl text-sm font-bold transition ${yr === currentYear ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}">
+          ${yr}
+        </button>
+      `).join('');
+    }
+
+    function changeYear(yr) {
+      currentYear = yr;
+      renderYearsBar();
+      renderGalleryContent();
+    }
+
+    function renderGalleryContent() {
+      const container = document.getElementById('gallery-content');
+      
+      if (currentCategory === 'school') {
+        const folders = driveData.school[currentYear] || [];
+        if (folders.length === 0) {
+          container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen foto's gevonden in dit jaar.</p>`;
+          return;
+        }
+
+        container.innerHTML = folders.map(f => `
+          <div class="mb-8">
+            <span class="inline-block px-3 py-1 rounded-lg bg-blue-500/10 text-blue-500 font-bold text-sm border border-blue-500/20 mb-4">Arkaplan / Map: ${f.folderName} (${f.photos.length} foto's)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              ${f.photos.map(p => `
+                <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                  <div class="h-48 overflow-hidden bg-slate-950">
+                    <img src="${p.url}" alt="${p.name}" class="w-full h-full object-cover">
+                  </div>
+                  <div class="p-4 flex items-center justify-between">
+                    <div>
+                      <h4 class="font-bold text-sm text-slate-900 dark:text-white">${p.name}</h4>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Map: ${f.folderName}</p>
+                    </div>
+                    <button onclick="toggleSelectPhoto('${p.name}', '${f.folderName}', '${p.url}')" id="btn-${p.name}-${f.folderName}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white">
+                      Selecteren
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        const students = driveData.eigen[currentYear] || [];
+        if (students.length === 0) {
+          container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen personen gevonden in dit jaar.</p>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            ${students.map((s, idx) => `
+              <div onclick="openPasswordModal('${currentYear}', ${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-indigo-500/50 cursor-pointer transition group flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 dark:text-slate-100">${s.student}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">${s.folders.length} Arkaplan mappen</p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-lock text-slate-400 group-hover:text-indigo-500 transition"></i>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+
+    function toggleSelectPhoto(name, folder, url) {
+      const index = selectedPhotos.findIndex(p => p.name === name && p.folder === folder);
+      const btn = document.getElementById(`btn-${name}-${folder}`);
+
+      if (index > -1) {
+        selectedPhotos.splice(index, 1);
+        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white";
+        btn.innerText = "Selecteren";
+      } else {
+        selectedPhotos.push({ name, folder, url });
+        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-blue-600 text-white";
+        btn.innerText = "Geselecteerd ✓";
+      }
+
+      document.getElementById('selected-count').innerText = selectedPhotos.length;
+    }
+
+    function openPrintModal() {
+      if (selectedPhotos.length === 0) {
+        alert("Selecteer eerst ten minste één foto om te printen!");
+        return;
+      }
+
+      const listContainer = document.getElementById('order-selected-list');
+      listContainer.innerHTML = selectedPhotos.map(p => `
+        <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800">
+          <span class="font-bold">${p.name} <span class="text-blue-500">(${p.folder})</span></span>
+        </div>
+      `).join('');
+
+      document.getElementById('print-modal').classList.remove('hidden');
+      document.getElementById('print-modal').classList.add('flex');
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-modal').classList.add('hidden');
+      document.getElementById('print-modal').classList.remove('flex');
+    }
+
+    function submitPrintOrder(e) {
+      e.preventDefault();
+      const name = document.getElementById('order-name').value;
+      const paperType = document.getElementById('order-paper-type').value;
+
+      let photoListText = selectedPhotos.map(p => `- ${p.name} (Map: ${p.folder}) | Link: ${p.url}`).join('\n');
+
+      const subject = encodeURIComponent("Print / Bestelling Aanvraag - Nieuwe Schoolfoto's");
+      const body = encodeURIComponent(`Hallo,\n\nNaam: ${name}\nPapierformaat: ${paperType}\n\nGeselecteerde Foto's:\n${photoListText}\n\nMet vriendelijke groet,\n${name}`);
+
+      window.location.href = `mailto:nieuweschoolfotos@gmail.com?subject=${subject}&body=${body}`;
+      closePrintModal();
+    }
+
+    function openPasswordModal(year, studentIdx) {
+      selectedStudent = driveData.eigen[year][studentIdx];
+      document.getElementById('pass-student-name').innerText = selectedStudent.student;
+      document.getElementById('student-pass-input').value = '';
+      document.getElementById('pass-error').classList.add('hidden');
+      document.getElementById('password-modal').classList.remove('hidden');
+      document.getElementById('password-modal').classList.add('flex');
+    }
+
+    function closePasswordModal() {
+      document.getElementById('password-modal').classList.add('hidden');
+      document.getElementById('password-modal').classList.remove('flex');
+    }
+
+    function verifyPassword(e) {
+      e.preventDefault();
+      const enteredPass = document.getElementById('student-pass-input').value;
+      if (enteredPass === selectedStudent.password) {
+        closePasswordModal();
+        renderStudentFolders(selectedStudent);
+      } else {
+        document.getElementById('pass-error').classList.remove('hidden');
+      }
+    }
+
+    function renderStudentFolders(student) {
+      const container = document.getElementById('gallery-content');
+      container.innerHTML = `
+        <div class="mb-6 flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-4 rounded-2xl">
+          <div>
+            <h3 class="font-bold text-lg text-indigo-500">${student.student}</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Album ontgrendeld</p>
+          </div>
+          <button onclick="renderGalleryContent()" class="text-xs text-indigo-500 hover:text-slate-900 dark:hover:text-white font-semibold">
+            <i class="fa-solid fa-xmark mr-1"></i> Sluiten
+          </button>
+        </div>
+
+        ${student.folders.map(f => `
+          <div class="mb-8">
+            <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold text-sm border border-indigo-500/20">Arkaplan: ${f.folderName}</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+              ${f.photos.map(p => `
+                <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                  <div class="h-48 overflow-hidden bg-slate-950">
+                    <img src="${p.url}" alt="${p.name}" class="w-full h-full object-cover">
+                  </div>
+                  <div class="p-4 flex items-center justify-between">
+                    <div>
+                      <h4 class="font-bold text-sm text-slate-900 dark:text-white">${p.name}</h4>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">${student.student} / ${f.folderName}</p>
+                    </div>
+                    <button onclick="toggleSelectPhoto('${p.name}', '${student.student}-${f.folderName}', '${p.url}')" id="btn-${p.name}-${student.student}-${f.folderName}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white">
+                      Selecteren
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      `;
+    }
+  </script>
+</body>
+</html>
