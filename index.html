@@ -441,6 +441,9 @@
             (s.folders || []).forEach(f => {
               (f.photos || []).forEach(p => {
                 let photoEntry = studentObj.photos.find(item => item.name === p.name);
+                if (!photo'Entry') {
+                  // created
+                }
                 if (!photoEntry) {
                   photoEntry = {
                     id: `eigen_${yr}_${s.student}_${p.name}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
@@ -470,8 +473,7 @@
     }
 
     async function initData() {
-      if (isDataLoaded) return;
-
+      // isDataLoaded kontrolünü kaldırıp her seferinde taze veri çekilmesini sağlıyoruz
       if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.school || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
         driveData = normalizeData(window.LOCAL_MANIFEST);
         isDataLoaded = true;
@@ -487,7 +489,7 @@
     }
 
     async function fetchGitHubData() {
-      if (isDataLoaded || isFetching) return;
+      if (isFetching) return;
       isFetching = true;
       try {
         let res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1`);
@@ -508,10 +510,13 @@
         let newEigenData = {};
         const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
 
+        // Her seferinde benzersiz rastgele cache buster üret
+        const freshCacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
         for (let item of data.tree) {
           if (item.type !== 'blob') continue;
           const pathParts = item.path.split('/');
-          const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
+          const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}${freshCacheBuster}`;
           const localUrl = `./${item.path}`;
           
           if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
@@ -634,7 +639,7 @@
 
     async function selectCategory(cat) {
       currentCategory = cat;
-      isDataLoaded = false; 
+      isDataLoaded = false; // Her kategori seçiminde hafızayı sıfırla ve yeniden çek
       await initData();
 
       navigateTo('page-gallery');
@@ -690,9 +695,6 @@
         return;
       }
 
-      // KESİN ÇÖZÜM: Tamamen rastgele bir sayı üreterek tarayıcının önbellekte tutmasını engelliyoruz
-      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
       if (currentCategory === 'school') {
         if (data.length === 0) {
           container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen foto's in dit jaar</p>`;
@@ -703,13 +705,13 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             ${data.map(photo => {
               const activeVer = photo.versions[photo.activeVersionIndex || 0] || photo.versions[0];
-              const imgUrl = `${activeVer.url}${cacheBuster}`;
+              const imgUrl = activeVer.url;
               const isSelected = selectedPhotos.some(p => p.id === photo.id);
 
               return `
                 <div class="group relative bg-white dark:bg-slate-800/80 border ${isSelected ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col">
                   <div onclick="openDetailModal('${photo.id}')" class="w-full h-48 bg-slate-950 cursor-pointer overflow-hidden relative flex items-center justify-center">
-                    <img src="${imgUrl}" alt="${photo.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='${activeVer.backupUrl}${cacheBuster}'">
+                    <img src="${imgUrl}" alt="${photo.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='${activeVer.backupUrl}'">
                     
                     ${photo.versions.length > 1 ? `
                       <span class="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-white font-medium border border-white/10">
@@ -779,13 +781,13 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               ${studentObj.photos.map(photo => {
                 const activeVer = photo.versions[photo.activeVersionIndex || 0] || photo.versions[0];
-                const imgUrl = `${activeVer.url}${cacheBuster}`;
+                const imgUrl = activeVer.url;
                 const isSelected = selectedPhotos.some(p => p.id === photo.id);
 
                 return `
                   <div class="group relative bg-white dark:bg-slate-800/80 border ${isSelected ? 'border-indigo-500 ring-2 ring-indigo-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col">
                     <div onclick="openDetailModal('${photo.id}')" class="w-full h-48 bg-slate-950 cursor-pointer overflow-hidden relative flex items-center justify-center">
-                      <img src="${imgUrl}" alt="${photo.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='${activeVer.backupUrl}${cacheBuster}'">
+                      <img src="${imgUrl}" alt="${photo.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='${activeVer.backupUrl}'">
                       
                       ${photo.versions.length > 1 ? `
                         <span class="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-white font-medium border border-white/10">
@@ -880,13 +882,11 @@
       const listContainer = document.getElementById('modal-versions-list');
       if (!currentDetailPhoto) return;
 
-      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
       listContainer.innerHTML = currentDetailPhoto.versions.map((ver, idx) => `
         <div onclick="switchModalVersion(${idx})" class="w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition shrink-0 relative ${
           currentDetailVersionIdx === idx ? 'border-blue-500 scale-105 shadow-md' : 'border-slate-700 opacity-60 hover:opacity-100'
         }">
-          <img src="${ver.url}${cacheBuster}" alt="${ver.backgroundName}" class="w-full h-full object-cover">
+          <img src="${ver.url}" alt="${ver.backgroundName}" class="w-full h-full object-cover">
           <div class="absolute inset-x-0 bottom-0 bg-slate-950/80 text-[9px] text-white text-center py-0.5 truncate px-1">
             ${ver.backgroundName}
           </div>
@@ -904,9 +904,7 @@
     function updateModalMainImage() {
       if (!currentDetailPhoto) return;
       const ver = currentDetailPhoto.versions[currentDetailVersionIdx];
-      const cacheBuster = `?v=${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-      
-      document.getElementById('modal-main-img').src = `${ver.url}${cacheBuster}`;
+      document.getElementById('modal-main-img').src = ver.url;
       document.getElementById('modal-active-bg-name').innerText = ver.backgroundName;
     }
 
@@ -983,7 +981,7 @@
     function submitPrintOrder(e) {
       e.preventDefault();
       const name = document.getElementById('order-name').value;
-      const paperType = document.getElementById('order-paper-type').value;
+      const paperType = document.getElementById('order-paper-type'].value;
 
       let bodyText = `Bestelling geplaatst door: ${name}\nPapierformaat: ${paperType}\n\nGeselecteerde Foto's:\n`;
       selectedPhotos.forEach(p => {
@@ -1041,7 +1039,7 @@
       const email = document.getElementById('missing-email-input').value;
 
       const subject = encodeURIComponent(`Ontbrekende foto aanvraag: ${name} (${code})`);
-      const body = encodeURIComponent(`Beste beheerder,\n\nIk kon de foto's niet vinden of mijn inlogcode ontbreekt.\n\nGegevens:\n- Inlogcode: ${code}\n- Naam leerling: ${name}\n- E-mailadres: ${email}\n\nGraag handmatig nakijken.`);
+      const body = encodeURIComponent(`Beste beheerder,\n\nIk kon de foto's niet vinden of mijn inlogcode ontbreekt.\n\nGalerij instellingen\nGegevens:\n- Inlogcode: ${code}\n- Naam leerling: ${name}\n- E-mailadres: ${email}\n\nGraag handmatig nakijken.`);
 
       window.location.href = `mailto:info@nieuweschoolfoto.nl?subject=${subject}&body=${body}`;
     }
