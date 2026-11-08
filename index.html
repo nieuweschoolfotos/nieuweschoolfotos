@@ -6,6 +6,7 @@
   <title>nieuwe schoolfoto's - Gratis Archief</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="manifest.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -60,9 +61,13 @@
 
     <!-- PAGINA 1: HOME -->
     <section id="page-home" class="fade-in text-center py-16 flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-8">
-        <i class="fa-solid fa-bolt"></i> GitHub Live Koppeling Actief
+      <div id="status-badge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-8">
+        <i id="status-icon" class="fa-solid fa-bolt"></i> <span id="status-text">GitHub Live Koppeling Actief</span>
+        <button id="btn-pick-folder" onclick="document.getElementById('local-folder-input').click()" class="hidden ml-2 px-2 py-0.5 rounded-lg bg-blue-600 text-white text-xs hover:bg-blue-500 transition">
+          <i class="fa-solid fa-folder-open mr-1"></i> Klasör Seç
+        </button>
       </div>
+      <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
       
       <h1 class="text-4xl md:text-6xl font-black tracking-tight max-w-3xl leading-tight mb-6">
         Schoolfoto's <span class="bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">gratis bekijken</span> & bestellen
@@ -128,7 +133,12 @@
             <p id="gallery-subtitle" class="text-slate-500 dark:text-slate-400 text-xs">Selecteer een jaar</p>
           </div>
         </div>
-        <div id="years-bar" class="flex gap-2 overflow-x-auto pb-2 md:pb-0"></div>
+        <div class="flex items-center gap-2">
+          <button onclick="refreshData()" title="Verversen" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-rotate-right"></i> <span class="hidden sm:inline">Verversen</span>
+          </button>
+          <div id="years-bar" class="flex gap-2 overflow-x-auto pb-2 md:pb-0"></div>
+        </div>
       </div>
       <div id="gallery-content" class="min-h-[300px]"></div>
     </section>
@@ -214,15 +224,54 @@
 
   <!-- JAVASCRIPT LOGICA -->
   <script>
-    const GITHUB_USERNAME = 'tolgaoruc2016';
-    const GITHUB_REPO = 'nieuwe-schoolfotos';
+    let GITHUB_USERNAME = 'nieuweschoolfotos';
+    let GITHUB_REPO = 'nieuweschoolfotos';
+
+    // GitHub Pages üzerinde çalışırken repo ve kullanıcı adını otomatik tespit et
+    if (window.location.hostname.endsWith('github.io')) {
+      GITHUB_USERNAME = window.location.hostname.split('.')[0];
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      if (pathSegments.length > 0) {
+        GITHUB_REPO = pathSegments[0];
+      }
+    }
     let BRANCH = 'main'; // İhtiyaca göre 'master' da olabilir
 
+    // Ortam Tespiti: Yerel dosya (file://) veya localhost mu?
+    const isLocalEnv = window.location.protocol === 'file:' || 
+                       window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
+
     let driveData = { school: {}, eigen: {} };
+    let isDataLoaded = false;
+    let isFetching = false;
     let currentCategory = 'school';
     let currentYear = '';
     let selectedStudent = null;
     let selectedPhotos = [];
+
+    // Sayfa açıldığında ortam rozetini güncelle
+    window.addEventListener('DOMContentLoaded', () => {
+      const badge = document.getElementById('status-badge');
+      const icon = document.getElementById('status-icon');
+      const text = document.getElementById('status-text');
+      const btnPick = document.getElementById('btn-pick-folder');
+
+      if (isLocalEnv) {
+        if (badge) {
+          badge.className = "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium mb-8";
+        }
+        if (icon) icon.className = "fa-solid fa-laptop-code";
+        if (text) text.innerText = "Yerel Mod Aktif (file://)";
+        if (btnPick) btnPick.classList.remove('hidden');
+      } else {
+        if (badge) {
+          badge.className = "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-8";
+        }
+        if (icon) icon.className = "fa-solid fa-bolt";
+        if (text) text.innerText = "GitHub Live Koppeling Actief";
+      }
+    });
 
     // Tema Değiştirme
     function toggleTheme() {
@@ -237,51 +286,88 @@
       }
     }
 
+    // Ana Veri Yükleme: Yereldeyse manifest.js, GitHub Pages'teyse manifest.js veya GitHub Canlı API
+    async function initData() {
+      if (isDataLoaded) return;
+
+      // 1. Önce manifest.js kontrol et (yerelde veya GitHub Pages'te anında yükleme)
+      if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.school || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
+        console.log("Veriler manifest.js üzerinden başarıyla yüklendi:", window.LOCAL_MANIFEST);
+        driveData = window.LOCAL_MANIFEST;
+        isDataLoaded = true;
+        return;
+      }
+
+      // 2. Yerelde çalışıyor ama manifest.js bulunamadıysa uyarı ver
+      if (isLocalEnv) {
+        console.warn("Yerel moddasınız ancak manifest.js henüz oluşturulmamış. Lütfen 'update-photos.bat' çalıştırın veya 'Klasör Seç' butonuna tıklayın.");
+        return;
+      }
+
+      // 3. GitHub Pages üzerindeyken API'den çek
+      await fetchGitHubData();
+    }
+
     async function fetchGitHubData() {
+      if (isDataLoaded || isFetching) return;
+      isFetching = true;
       try {
         let res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1`);
         let data = await res.json();
         
         // Eğer main dalı bulunamazsa master'ı dene
-        if (!data.tree) {
+        if (!data.tree && BRANCH !== 'master') {
           BRANCH = 'master';
           res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1`);
           data = await res.json();
         }
 
-        if (!data.tree) return;
+        if (!data.tree) {
+          console.error("GitHub API Hatası veya repo boş:", data);
+          isFetching = false;
+          return;
+        }
 
         let newSchoolData = {};
         let newEigenData = {};
 
         for (let item of data.tree) {
+          if (item.type !== 'blob') continue;
           const pathParts = item.path.split('/');
+          const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
+          const localUrl = `./${item.path}`;
           
-          // school/JAAR/ARKAPLAN/photo.jpg
-          if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 5) {
-            const year = pathParts[2];
-            const subFolder = pathParts[3];  // Örn: 1 (Arka plan)
-            const fileName = pathParts[4];   // Örn: 1.jpg
-            
-            if (!newSchoolData[year]) newSchoolData[year] = [];
-            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
-            
-            let folderObj = newSchoolData[year].find(f => f.folderName === subFolder);
-            if (!folderObj) {
-              folderObj = { folderName: subFolder, photos: [] };
-              newSchoolData[year].push(folderObj);
-            }
+          // school/JAAR/ARKAPLAN/photo.jpg veya school/JAAR/photo.jpg
+          if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
+            let year = pathParts[2];
+            let subFolder = 'Algemeen';
+            let fileName = '';
 
-            if (fileName && fileName !== 'pass.txt') {
-              folderObj.photos.push({ name: fileName, url: rawUrl, folder: subFolder });
+            if (pathParts.length === 4) {
+              fileName = pathParts[3];
+            } else {
+              subFolder = pathParts[3];
+              fileName = pathParts[4];
+            }
+            
+            const isImage = /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(fileName);
+            if (isImage && fileName !== 'pass.txt') {
+              if (!newSchoolData[year]) newSchoolData[year] = [];
+              
+              let folderObj = newSchoolData[year].find(f => f.folderName === subFolder);
+              if (!folderObj) {
+                folderObj = { folderName: subFolder, photos: [] };
+                newSchoolData[year].push(folderObj);
+              }
+
+              folderObj.photos.push({ name: fileName, url: rawUrl, backupUrl: localUrl, folder: subFolder });
             }
           }
 
-          // eigen/JAAR/NAAM/ARKAPLAN/photo.jpg
-          if (pathParts[0] === 'foto' && pathParts[1] === 'eigen' && pathParts.length >= 5) {
+          // eigen/JAAR/NAAM/ARKAPLAN/photo.jpg veya eigen/JAAR/NAAM/photo.jpg
+          if (pathParts[0] === 'foto' && pathParts[1] === 'eigen' && pathParts.length >= 4) {
             const year = pathParts[2];
             const studentName = pathParts[3].replace(/_/g, ' ');
-            const subFolder = pathParts[4];
 
             if (!newEigenData[year]) newEigenData[year] = [];
 
@@ -291,29 +377,103 @@
               newEigenData[year].push(studentObj);
             }
 
-            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${item.path}`;
-
-            if (pathParts[4] === 'pass.txt') {
-              const txtRes = await fetch(rawUrl);
-              studentObj.password = (await txtRes.text()).trim();
-            } else if (pathParts.length >= 6 && pathParts[5]) {
-              const actualSubFolder = pathParts[4];
-              const fileName = pathParts[5];
-
-              let folderGroup = studentObj.folders.find(f => f.folderName === actualSubFolder);
-              if (!folderGroup) {
-                folderGroup = { folderName: actualSubFolder, photos: [] };
-                studentObj.folders.push(folderGroup);
+            if (pathParts.length === 5 && pathParts[4] === 'pass.txt') {
+              try {
+                const txtRes = await fetch(rawUrl);
+                if (txtRes.ok) {
+                  studentObj.password = (await txtRes.text()).trim();
+                }
+              } catch (e) {
+                console.warn("pass.txt okunamadı:", e);
               }
-              folderGroup.photos.push({ name: fileName, url: rawUrl, folder: actualSubFolder });
+            } else {
+              let actualSubFolder = 'Algemeen';
+              let fileName = '';
+
+              if (pathParts.length === 5) {
+                fileName = pathParts[4];
+              } else if (pathParts.length >= 6) {
+                actualSubFolder = pathParts[4];
+                fileName = pathParts[5];
+              }
+
+              const isImage = /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(fileName);
+              if (isImage) {
+                let folderGroup = studentObj.folders.find(f => f.folderName === actualSubFolder);
+                if (!folderGroup) {
+                  folderGroup = { folderName: actualSubFolder, photos: [] };
+                  studentObj.folders.push(folderGroup);
+                }
+                folderGroup.photos.push({ name: fileName, url: rawUrl, backupUrl: localUrl, folder: actualSubFolder });
+              }
             }
           }
         }
 
         driveData.school = newSchoolData;
         driveData.eigen = newEigenData;
+        isDataLoaded = true;
       } catch (err) {
         console.error("GitHub API Fout:", err);
+      } finally {
+        isFetching = false;
+      }
+    }
+
+    function refreshData() {
+      isDataLoaded = false;
+      selectCategory(currentCategory);
+    }
+
+    // Tarayıcıdan doğrudan yerel klasör seçildiğinde (isteğe bağlı)
+    function handleLocalFolderSelect(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      let newSchoolData = {};
+      const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
+
+      for (let file of files) {
+        const relPath = file.webkitRelativePath || file.name;
+        const parts = relPath.replace(/\\/g, '/').split('/');
+        let offset = 0;
+        if (parts[0] === 'foto') offset = 1;
+
+        const category = parts[offset];
+        if (category === 'school' && parts.length >= offset + 3) {
+          const year = parts[offset + 1];
+          let subFolder = 'Algemeen';
+          let fileName = '';
+
+          if (parts.length === offset + 3) {
+            fileName = parts[offset + 2];
+          } else {
+            subFolder = parts[offset + 2];
+            fileName = parts[offset + 3];
+          }
+
+          if (imageRegex.test(fileName)) {
+            if (!newSchoolData[year]) newSchoolData[year] = [];
+            let folderObj = newSchoolData[year].find(f => f.folderName === subFolder);
+            if (!folderObj) {
+              folderObj = { folderName: subFolder, photos: [] };
+              newSchoolData[year].push(folderObj);
+            }
+            const blobUrl = URL.createObjectURL(file);
+            folderObj.photos.push({
+              name: fileName,
+              url: blobUrl,
+              backupUrl: blobUrl,
+              folder: subFolder
+            });
+          }
+        }
+      }
+
+      if (Object.keys(newSchoolData).length > 0) {
+        driveData.school = newSchoolData;
+        isDataLoaded = true;
+        selectCategory(currentCategory);
       }
     }
 
@@ -325,19 +485,34 @@
 
     async function selectCategory(cat) {
       currentCategory = cat;
-      await fetchGitHubData();
-      const years = Object.keys(driveData[cat]);
-      currentYear = years.length > 0 ? years[years.length - 1] : '';
-      
       document.getElementById('gallery-title').innerText = cat === 'school' ? "School foto's" : "Per Persoon";
+      navigateTo('page-gallery');
+
+      const container = document.getElementById('gallery-content');
+      const yearsContainer = document.getElementById('years-bar');
+
+      if (!isDataLoaded) {
+        yearsContainer.innerHTML = '';
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center py-20 text-slate-500">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-blue-500"></i>
+            <p class="text-base font-semibold text-slate-700 dark:text-slate-300">Foto's laden...</p>
+            <p class="text-xs text-slate-400 mt-1">Even geduld alstublieft</p>
+          </div>
+        `;
+        await initData();
+      }
+
+      const years = Object.keys(driveData[cat] || {}).sort().reverse();
+      currentYear = years.length > 0 ? years[0] : '';
+      
       renderYearsBar();
       renderGalleryContent();
-      navigateTo('page-gallery');
     }
 
     function renderYearsBar() {
       const yearsContainer = document.getElementById('years-bar');
-      const years = Object.keys(driveData[currentCategory]);
+      const years = Object.keys(driveData[currentCategory]).sort().reverse();
       if (years.length === 0) {
         yearsContainer.innerHTML = `<span class="text-xs text-slate-500">Geen jaren gevonden.</span>`;
         return;
@@ -361,7 +536,12 @@
       if (currentCategory === 'school') {
         const folders = driveData.school[currentYear] || [];
         if (folders.length === 0) {
-          container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen foto's gevonden in dit jaar.</p>`;
+          container.innerHTML = `
+            <div class="text-center py-16">
+              <i class="fa-regular fa-images text-4xl text-slate-400 mb-3 block"></i>
+              <p class="text-slate-500">Geen foto's gevonden in dit jaar.</p>
+            </div>
+          `;
           return;
         }
 
@@ -369,29 +549,40 @@
           <div class="mb-8">
             <span class="inline-block px-3 py-1 rounded-lg bg-blue-500/10 text-blue-500 font-bold text-sm border border-blue-500/20 mb-4">Arkaplan / Map: ${f.folderName} (${f.photos.length} foto's)</span>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              ${f.photos.map(p => `
+              ${f.photos.map(p => {
+                const isSelected = selectedPhotos.some(sp => sp.name === p.name && sp.folder === f.folderName);
+                const btnClass = isSelected
+                  ? "bg-blue-600 text-white"
+                  : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white";
+                const btnText = isSelected ? "Geselecteerd ✓" : "Selecteren";
+                return `
                 <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
-                  <div class="h-48 overflow-hidden bg-slate-950">
-                    <img src="${p.url}" alt="${p.name}" class="w-full h-full object-cover">
+                  <div class="h-52 overflow-hidden bg-slate-950 flex items-center justify-center">
+                    <img src="${p.url}" onerror="this.onerror=null; this.src='${p.backupUrl || p.url}';" alt="${p.name}" class="w-full h-full object-cover">
                   </div>
                   <div class="p-4 flex items-center justify-between">
                     <div>
                       <h4 class="font-bold text-sm text-slate-900 dark:text-white">${p.name}</h4>
                       <p class="text-xs text-slate-500 dark:text-slate-400">Map: ${f.folderName}</p>
                     </div>
-                    <button onclick="toggleSelectPhoto('${p.name}', '${f.folderName}', '${p.url}')" id="btn-${p.name}-${f.folderName}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white">
-                      Selecteren
+                    <button onclick="toggleSelectPhoto('${p.name}', '${f.folderName}', '${p.url}')" id="btn-${p.name}-${f.folderName}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${btnClass}">
+                      ${btnText}
                     </button>
                   </div>
                 </div>
-              `).join('')}
+              `}).join('')}
             </div>
           </div>
         `).join('');
       } else {
         const students = driveData.eigen[currentYear] || [];
         if (students.length === 0) {
-          container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen personen gevonden in dit jaar.</p>`;
+          container.innerHTML = `
+            <div class="text-center py-16">
+              <i class="fa-regular fa-user text-4xl text-slate-400 mb-3 block"></i>
+              <p class="text-slate-500">Geen personen gevonden in dit jaar.</p>
+            </div>
+          `;
           return;
         }
 
@@ -511,22 +702,29 @@
           <div class="mb-8">
             <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold text-sm border border-indigo-500/20">Arkaplan: ${f.folderName}</span>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-              ${f.photos.map(p => `
+              ${f.photos.map(p => {
+                const folderKey = `${student.student}-${f.folderName}`;
+                const isSelected = selectedPhotos.some(sp => sp.name === p.name && sp.folder === folderKey);
+                const btnClass = isSelected
+                  ? "bg-blue-600 text-white"
+                  : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white";
+                const btnText = isSelected ? "Geselecteerd ✓" : "Selecteren";
+                return `
                 <div class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
-                  <div class="h-48 overflow-hidden bg-slate-950">
-                    <img src="${p.url}" alt="${p.name}" class="w-full h-full object-cover">
+                  <div class="h-52 overflow-hidden bg-slate-950 flex items-center justify-center">
+                    <img src="${p.url}" onerror="this.onerror=null; this.src='${p.backupUrl || p.url}';" alt="${p.name}" class="w-full h-full object-cover">
                   </div>
                   <div class="p-4 flex items-center justify-between">
                     <div>
                       <h4 class="font-bold text-sm text-slate-900 dark:text-white">${p.name}</h4>
                       <p class="text-xs text-slate-500 dark:text-slate-400">${student.student} / ${f.folderName}</p>
                     </div>
-                    <button onclick="toggleSelectPhoto('${p.name}', '${student.student}-${f.folderName}', '${p.url}')" id="btn-${p.name}-${student.student}-${f.folderName}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white">
-                      Selecteren
+                    <button onclick="toggleSelectPhoto('${p.name}', '${folderKey}', '${p.url}')" id="btn-${p.name}-${folderKey}" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${btnClass}">
+                      ${btnText}
                     </button>
                   </div>
                 </div>
-              `).join('')}
+              `}).join('')}
             </div>
           </div>
         `).join('')}
