@@ -1043,21 +1043,18 @@
 
           // school/JAAR/ACHTERGROND/photo.jpg of school/JAAR/photo.jpg
 
-// SCHOOL: Automatisch alle achtergronden vinden
-if (
-  pathParts[0] === 'foto' &&
-  pathParts[1] === 'school' &&
-  pathParts.length >= 5
-) {
+// SCHOOL: Klasör yapısına göre yılı, alt klasörü ve dosyayı ayıkla
+if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 5) {
   const year = pathParts[2];
-  const backgroundFolder = pathParts[3];
-  const fileName = pathParts[pathParts.length - 1];
+  const subfolderName = pathParts[3]; // Örn: Zomer, Winter, Strand
+  const fileName = pathParts[pathParts.length - 1]; // Örn: Ali.png
 
   if (isAllowedImage(fileName)) {
     if (!newschoolData[year]) {
       newschoolData[year] = [];
     }
 
+    // Aynı isimdeki fotoğrafı okul ve yıl bazında tek kartta birleştir
     let photo = newschoolData[year].find(
       p => p.name.toLowerCase() === fileName.toLowerCase()
     );
@@ -1070,23 +1067,18 @@ if (
         activeVersionIndex: 0,
         versions: []
       };
-
       newschoolData[year].push(photo);
     }
 
-    const backgroundName = isNaN(backgroundFolder)
-      ? backgroundFolder
-      : `Achtergrond ${backgroundFolder}`;
-
+    // Alt klasör adını (Zomer, Winter vb.) versiyon olarak ekle
     photo.versions.push({
-      folder: backgroundFolder,
-      backgroundName: backgroundName,
+      folder: subfolderName,
+      backgroundName: subfolderName,
       url: rawUrl,
       backupUrl: localUrl
     });
   }
 }
-
 
 
           // eigen/JAAR/NAAM/ACHTERGROND/photo.jpg
