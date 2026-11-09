@@ -1043,77 +1043,49 @@
 
           // school/JAAR/ACHTERGROND/photo.jpg of school/JAAR/photo.jpg
 
-          if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
+// SCHOOL: Automatisch alle achtergronden vinden
+if (
+  pathParts[0] === 'foto' &&
+  pathParts[1] === 'school' &&
+  pathParts.length >= 5
+) {
+  const year = pathParts[2];
+  const backgroundFolder = pathParts[3];
+  const fileName = pathParts[pathParts.length - 1];
 
-            let year = pathParts[2];
+  if (isAllowedImage(fileName)) {
+    if (!newschoolData[year]) {
+      newschoolData[year] = [];
+    }
 
-            let subFolder = 'Algemeen';
+    let photo = newschoolData[year].find(
+      p => p.name.toLowerCase() === fileName.toLowerCase()
+    );
 
-            let fileName = '';
+    if (!photo) {
+      photo = {
+        id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+        name: fileName,
+        year: year,
+        activeVersionIndex: 0,
+        versions: []
+      };
 
+      newschoolData[year].push(photo);
+    }
 
+    const backgroundName = isNaN(backgroundFolder)
+      ? backgroundFolder
+      : `Achtergrond ${backgroundFolder}`;
 
-            if (pathParts.length === 4) {
-
-              fileName = pathParts[3];
-
-            } else {
-
-              subFolder = pathParts[3];
-
-              fileName = pathParts[4];
-
-            }
-
-
-
-            if (isAllowedImage(fileName) && fileName !== 'pass.txt') {
-
-              if (!newschoolData[year]) newschoolData[year] = [];
-
-
-
-              let photoItem = newschoolData[year].find(p => p.name === fileName);
-
-              if (!photoItem) {
-
-                photoItem = {
-
-                  id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-
-                  name: fileName,
-
-                  year: year,
-
-                  activeVersionIndex: 0,
-
-                  versions: []
-
-                };
-
-                newschoolData[year].push(photoItem);
-
-              }
-
-
-
-              const bgTitle = isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`;
-
-              photoItem.versions.push({
-
-                folder: subFolder,
-
-                backgroundName: bgTitle,
-
-                url: rawUrl,
-
-                backupUrl: localUrl
-
-              });
-
-            }
-
-          }
+    photo.versions.push({
+      folder: backgroundFolder,
+      backgroundName: backgroundName,
+      url: rawUrl,
+      backupUrl: localUrl
+    });
+  }
+}
 
 
 
