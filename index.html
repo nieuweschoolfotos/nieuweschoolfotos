@@ -44,12 +44,14 @@
 
       <!-- SAĞ ÜST: TEMA, KLASÖR YÜKLEME VE PRINT BUTONLARI -->
       <div class="flex items-center space-x-3">
+        <!-- Gizli Dosya Seçici -->
+        <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
+        
         <!-- Klasör / Yıl Otomatik Yükleme Butonu -->
         <button onclick="document.getElementById('local-folder-input').click()" class="text-xs md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-2 rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center gap-2" title="Klasör veya Yıl Fotoğrafları Seç">
           <i class="fa-solid fa-folder-open"></i>
           <span class="hidden sm:inline">Klasör/Yıl Ekle</span>
         </button>
-        <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
 
         <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-yellow-400 transition" title="Thema wisselen">
           <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
@@ -401,7 +403,6 @@
         const fullPath = file.webkitRelativePath || file.name;
         const parts = fullPath.split('/');
 
-        // Örn: nieuweschoolfotos/foto/school/2025/1/foto.jpg veya school/2025/foto.jpg
         let fotoIdx = parts.indexOf('foto');
         let category = 'school';
         let year = new Date().getFullYear().toString();
@@ -410,9 +411,9 @@
         let studentName = '';
 
         if (fotoIdx !== -1 && parts.length > fotoIdx + 1) {
-          category = parts[fotoIdx + 1]; // school veya eigen
+          category = parts[fotoIdx + 1];
           if (parts.length > fotoIdx + 2) {
-            year = parts[fotoIdx + 2]; // Yıl (örn: 2025)
+            year = parts[fotoIdx + 2];
           }
 
           if (category === 'school') {
@@ -434,7 +435,6 @@
             }
           }
         } else {
-          // Eğer yapı düz veya klasör adında yıl geçiyorsa (örn: 2024_schoolfoto)
           const yearMatch = fullPath.match(/(19\d{2}|20\d{2})/);
           if (yearMatch) {
             year = yearMatch[1];
@@ -836,7 +836,6 @@
         contentEl.innerHTML = html;
 
       } else {
-        // EIGEN / PER PERSOON
         titleEl.innerText = "Persoonlijke Mappen";
         subtitleEl.innerText = `Jaar: ${currentYear}`;
         const students = driveData.eigen[currentYear] || [];
