@@ -42,17 +42,8 @@
         </span>
       </div>
 
-      <!-- SAĞ ÜST: TEMA, KLASÖR YÜKLEME VE PRINT BUTONLARI -->
+      <!-- SAĞ ÜST: TEMA VE PRINT BUTONLARI -->
       <div class="flex items-center space-x-3">
-        <!-- Gizli Dosya Seçici -->
-        <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
-        
-        <!-- Klasör / Yıl Otomatik Yükleme Butonu -->
-        <button onclick="document.getElementById('local-folder-input').click()" class="text-xs md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-2 rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center gap-2" title="Klasör veya Yıl Fotoğrafları Seç">
-          <i class="fa-solid fa-folder-open"></i>
-          <span class="hidden sm:inline">Klasör/Yıl Ekle</span>
-        </button>
-
         <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-yellow-400 transition" title="Thema wisselen">
           <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
         </button>
@@ -390,113 +381,6 @@
       }
     }
 
-    // --- KLASÖR / YIL OTOMATİK OKUMA FONKSİYONU ---
-    function handleLocalFolderSelect(event) {
-      const files = event.target.files;
-      if (!files || files.length === 0) return;
-
-      let newschoolData = {};
-      let newEigenData = {};
-      const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
-
-      for (let file of files) {
-        const fullPath = file.webkitRelativePath || file.name;
-        const parts = fullPath.split('/');
-
-        let fotoIdx = parts.indexOf('foto');
-        let category = 'school';
-        let year = new Date().getFullYear().toString();
-        let subFolder = 'Algemeen';
-        let fileName = file.name;
-        let studentName = '';
-
-        if (fotoIdx !== -1 && parts.length > fotoIdx + 1) {
-          category = parts[fotoIdx + 1];
-          if (parts.length > fotoIdx + 2) {
-            year = parts[fotoIdx + 2];
-          }
-
-          if (category === 'school') {
-            if (parts.length > fotoIdx + 4) {
-              subFolder = parts[fotoIdx + 3];
-              fileName = parts[fotoIdx + 4];
-            } else if (parts.length === fotoIdx + 4) {
-              fileName = parts[fotoIdx + 3];
-            }
-          } else if (category === 'eigen') {
-            if (parts.length > fotoIdx + 3) {
-              studentName = parts[fotoIdx + 3].replace(/_/g, ' ');
-            }
-            if (parts.length > fotoIdx + 5) {
-              subFolder = parts[fotoIdx + 4];
-              fileName = parts[fotoIdx + 5];
-            } else if (parts.length === fotoIdx + 4) {
-              fileName = parts[fotoIdx + 4];
-            }
-          }
-        } else {
-          const yearMatch = fullPath.match(/(19\d{2}|20\d{2})/);
-          if (yearMatch) {
-            year = yearMatch[1];
-          }
-        }
-
-        if (!imageRegex.test(fileName) || fileName === 'pass.txt') continue;
-        const objectUrl = URL.createObjectURL(file);
-
-        if (category === 'school') {
-          if (!newschoolData[year]) newschoolData[year] = [];
-          let photoItem = newschoolData[year].find(p => p.name === fileName);
-          if (!photoItem) {
-            photoItem = {
-              id: `school_${year}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-              name: fileName,
-              year: year,
-              activeVersionIndex: 0,
-              versions: []
-            };
-            newschoolData[year].push(photoItem);
-          }
-          photoItem.versions.push({
-            folder: subFolder,
-            backgroundName: isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`,
-            url: objectUrl,
-            backupUrl: objectUrl
-          });
-        } else if (category === 'eigen') {
-          if (!studentName) studentName = 'Leerling';
-          if (!newEigenData[year]) newEigenData[year] = [];
-          let studentObj = newEigenData[year].find(s => s.student === studentName);
-          if (!studentObj) {
-            studentObj = { student: studentName, password: '123', photos: [] };
-            newEigenData[year].push(studentObj);
-          }
-          let photoItem = studentObj.photos.find(p => p.name === fileName);
-          if (!photoItem) {
-            photoItem = {
-              id: `eigen_${year}_${studentName}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-              name: fileName,
-              year: year,
-              student: studentName,
-              activeVersionIndex: 0,
-              versions: []
-            };
-            studentObj.photos.push(photoItem);
-          }
-          photoItem.versions.push({
-            folder: subFolder,
-            backgroundName: isNaN(subFolder) ? subFolder : `Achtergrond ${subFolder}`,
-            url: objectUrl,
-            backupUrl: objectUrl
-          });
-        }
-      }
-
-      driveData = { school: newschoolData, eigen: newEigenData };
-      isDataLoaded = true;
-      navigateTo('page-selection');
-    }
-
     function normalizeData(raw) {
       if (!raw) return { school: {}, eigen: {} };
       let norm = { school: {}, eigen: {} };
@@ -587,10 +471,6 @@
       if (window.LOCAL_MANIFEST && (Object.keys(window.LOCAL_MANIFEST.school || {}).length > 0 || Object.keys(window.LOCAL_MANIFEST.eigen || {}).length > 0)) {
         driveData = normalizeData(window.LOCAL_MANIFEST);
         isDataLoaded = true;
-        return;
-      }
-
-      if (isLocalEnv) {
         return;
       }
 
@@ -765,7 +645,7 @@
           <div class="text-center py-16 bg-white dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-800 p-8">
             <i class="fa-solid fa-folder-open text-4xl text-slate-400 mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Geen foto's gevonden</h3>
-            <p class="text-slate-500 text-sm mb-6">Voeg een map of foto's toe via de knop rechtsboven.</p>
+            <p class="text-slate-500 text-sm mb-6">Er zijn nog geen foto's geladen vanuit het GitHub archief.</p>
           </div>
         `;
         return;
