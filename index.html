@@ -166,7 +166,6 @@
             cursor: pointer;
         }
 
-        /* Order Form Section */
         .order-panel {
             margin-top: 2rem;
             padding-top: 1.5rem;
@@ -202,7 +201,6 @@
             background: var(--primary-hover);
         }
 
-        /* Modal for Password Protected Albums */
         .modal {
             display: none;
             position: fixed;
@@ -279,7 +277,6 @@
     </header>
 
     <main>
-        <!-- Ana Klasör Listesi -->
         <div id="foldersView" class="folders-container">
             <div class="folder-card" onclick="openFolder('groep1')">
                 <h3>Groep 1 / 2</h3>
@@ -295,26 +292,22 @@
             </div>
         </div>
 
-        <!-- Galeri Görünümü (Başlangıçta gizli) -->
         <div id="galleryView" class="gallery-section">
             <button class="back-btn" onclick="closeFolder()">← Terug naar overzicht</button>
             <h2 id="galleryTitle">Album</h2>
             <p id="galleryDesc" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
 
-            <div class="photo-grid" id="photoGrid">
-                <!-- Fotoğraflar JavaScript ile yüklenecek -->
-            </div>
+            <div class="photo-grid" id="photoGrid"></div>
 
             <div class="order-panel">
                 <h3>Foto's Bestellen / Aanvragen</h3>
                 <p style="color: var(--text-muted); font-size: 0.9rem;">Selecteer de foto's die je wilt bestellen en vul je e-mailadres in.</p>
-                <input type="email" id="userEmail" placeholder="Jouw e-mailadres (bijv.naam@email.com)">
+                <input type="email" id="userEmail" placeholder="Jouw e-mailadres (bijv. naam@email.com)">
                 <button class="btn-primary" onclick="submitOrder()">Bestelling Verzenden</button>
             </div>
         </div>
     </main>
 
-    <!-- Şifre Giriş Modalı -->
     <div id="passwordModal" class="modal">
         <div class="modal-content">
             <h3>Wachtwoord Vereist</h3>
@@ -379,7 +372,6 @@
 
         function checkPassword() {
             const pass = document.getElementById('albumPassword').value;
-            // Basit koruma şifresi (istediğin gibi değiştirebilirsin)
             if (pass === 'wheermolen2026') {
                 closeModal();
                 loadGallery('persoonlijk');
@@ -438,7 +430,6 @@
 
             const selectedPhotos = Array.from(checkboxes).map(cb => cb.value);
             
-            // Mailto link oluşturarak sipariş talebini e-posta ile iletme
             const subject = encodeURIComponent('Bestelling Schoolfoto\'s - ' + email);
             const body = encodeURIComponent(`Hallo,\n\nIk wil graag de volgende foto's bestellen:\n${selectedPhotos.join(', ')}\n\nMijn e-mailadres is: ${email}`);
             
