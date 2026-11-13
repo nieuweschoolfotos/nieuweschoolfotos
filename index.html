@@ -439,39 +439,37 @@
           const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${encodeURI(item.path)}`;
           const localUrl = `./${item.path}`;
 
-          // SCHOOL: foto/school/YIL/GRUP_ADI/dosya.jpg
-          // Burada klasör adı (örn: vierhoeken) "grup/fotoğraf adı" olur, içindeki resimler ise arka plan versiyonları olur!
+          // SCHOOL: foto/school/YIL/GRUP_ADI/1 Wit.jpeg (Alt klasör olmadan doğrudan klasör içindeki fotoğrafları arka plan olarak birleştir)
           if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
             const year = pathParts[2];
             if (!newschoolData[year]) newschoolData[year] = [];
 
-            if (pathParts.length >= 5) {
-              const groupName = pathParts[3]; // Örn: vierhoeken
-              const fileName = pathParts[pathParts.length - 1]; // Örn: 1 Wit.jpeg
+            const groupName = pathParts[3]; // Örn: vierhoeken
+            const fileName = pathParts[pathParts.length - 1]; // Örn: 1 Wit.jpeg
 
-              if (isAllowedImage(fileName)) {
-                let photo = newschoolData[year].find(p => p.name.toLowerCase() === groupName.toLowerCase());
+            if (isAllowedImage(fileName)) {
+              // Tüm okul fotoğraflarını tek bir ana kartta (örn: "Schoolfoto's" veya klasör adıyla) birleştir
+              let photo = newschoolData[year].find(p => p.name.toLowerCase() === groupName.toLowerCase());
 
-                if (!photo) {
-                  photo = {
-                    id: `school_${year}_${groupName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-                    name: groupName,
-                    year: year,
-                    activeVersionIndex: 0,
-                    versions: []
-                  };
-                  newschoolData[year].push(photo);
-                }
-
-                const bgName = formatBgLabel(fileName);
-                photo.versions.push({
-                  folder: groupName,
-                  fileName: fileName,
-                  backgroundName: bgName,
-                  url: rawUrl,
-                  backupUrl: localUrl
-                });
+              if (!photo) {
+                photo = {
+                  id: `school_${year}_${groupName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+                  name: groupName,
+                  year: year,
+                  activeVersionIndex: 0,
+                  versions: []
+                };
+                newschoolData[year].push(photo);
               }
+
+              const bgName = formatBgLabel(fileName);
+              photo.versions.push({
+                folder: groupName,
+                fileName: fileName,
+                backgroundName: bgName,
+                url: rawUrl,
+                backupUrl: localUrl
+              });
             }
           }
 
@@ -932,7 +930,7 @@
     }
 
     function closePrintModal() {
-      document.getElementById('print-modal'].classList.add('hidden');
+      document.getElementById('print-modal').classList.add('hidden');
       document.getElementById('print-modal').classList.remove('flex');
     }
 
@@ -946,7 +944,7 @@
     function submitPrintOrder(e) {
       e.preventDefault();
       const name = document.getElementById('order-name').value;
-      const paperType = document.getElementById('order-paper-type'].value;
+      const paperType = document.getElementById('order-paper-type').value;
 
       if (selectedPhotos.length === 0) {
         alert("Selecteer eerst minstens één foto!");
