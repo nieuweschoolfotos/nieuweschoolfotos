@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="nl" class="dark">
 <head>
+
+  <script>
+  (function () {
+    const isMobile =
+      navigator.userAgentData?.mobile === true ||
+      /Android|iPhone|iPod|Windows Phone|Mobile/i.test(navigator.userAgent);
+
+    if (!isMobile) {
+      window.location.replace('https://nieuweschoolfotos.github.io/Privacybeleid/');
+    }
+  })();
+</script>
+  
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/nieuweschoolfotos/nieuweschoolfotos/main/favicon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
