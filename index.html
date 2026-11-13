@@ -3,11 +3,19 @@
 <head>
 
 
-  
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/nieuweschoolfotos/nieuweschoolfotos/main/favicon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>nieuwe schoolfoto's - Gratis Archief</title>
+  <script>
+    // Allow phones only; tablets, desktops, and unrecognized devices go to the privacy page.
+    const isMobilePhone = /Android|iPhone|iPod|Windows Phone|Mobile/i.test(navigator.userAgent)
+      && !/iPad|Tablet/i.test(navigator.userAgent);
+
+    if (!isMobilePhone) {
+      window.location.replace('https://nieuweschoolfotos.github.io/Privacybeleid/');
+    }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="manifest.js"></script>
@@ -48,7 +56,7 @@
 
       <!-- SAĞ ÜST: TEMA VE PRINT BUTONLARI -->
       <div class="flex items-center space-x-3">
-        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-yellow-400 transition" title="Thema wisselen">
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
           <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
         </button>
 
@@ -75,7 +83,7 @@
         Kies hieronder je categorie, selecteer de gewenste foto's en stuur direct een printaanvraag!
       </p>
 
-      <button onclick="navigateTo('page-selection')" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-lg rounded-2xl shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-105 transition-all duration-200 flex items-center gap-3">
+      <button onclick="navigateTo('page-selection')" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xl rounded-2xl shadow-xl transition">
         <span>Starten</span>
         <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
       </button>
@@ -89,7 +97,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
+        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group">
           <div class="w-20 h-20 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-3xl mb-6 group-hover:scale-110 transition">
             <i class="fa-solid fa-users"></i>
           </div>
@@ -100,7 +108,7 @@
           </span>
         </div>
 
-        <div onclick="selectCategory('eigen')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-indigo-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
+        <div onclick="selectCategory('eigen')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-indigo-500/50 hover:shadow-lg cursor-pointer transition group">
           <div class="w-20 h-20 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 text-3xl mb-6 group-hover:scale-110 transition">
             <i class="fa-solid fa-key"></i>
           </div>
@@ -132,7 +140,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="refreshData()" title="Verversen" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition">
+          <button onclick="refreshData()" title="Verversen" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
             <i class="fa-solid fa-rotate-right"></i> <span class="hidden sm:inline">Verversen</span>
           </button>
           <div id="years-bar" class="flex gap-2 overflow-x-auto pb-2 md:pb-0"></div>
@@ -163,12 +171,12 @@
       <form onsubmit="submitPrintOrder(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Jouw Naam</label>
-          <input type="text" id="order-name" required placeholder="Typ je volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
+          <input type="text" id="order-name" required placeholder="Typ je volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Papierformaat / Type</label>
-          <select id="order-paper-type" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
+          <select id="order-paper-type" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none">
             <option value="Fotopapier (Glanzend)">Fotopapier (Glanzend)</option>
             <option value="A4 Standaard Papier">A4 Standaard Papier</option>
           </select>
@@ -204,7 +212,7 @@
 
       <form onsubmit="verifyPassword(event)" class="space-y-4">
         <div>
-          <input type="password" id="student-pass-input" required placeholder="Wachtwoord..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm text-center tracking-widest focus:outline-none focus:border-indigo-500">
+          <input type="password" id="student-pass-input" required placeholder="Wachtwoord..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-white">
           <p id="pass-error" class="text-red-400 text-xs mt-2 hidden text-center">Onjuiste code!</p>
         </div>
 
@@ -230,7 +238,7 @@
             <p id="modal-photo-info" class="text-xs text-slate-500 dark:text-slate-400">Achtergrond- & versiedetails</p>
           </div>
         </div>
-        <button onclick="closeDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+        <button onclick="closeDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -265,13 +273,13 @@
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto">
           <!-- DOWNLOADEN -->
-          <button onclick="downloadCurrentModalPhoto()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs md:text-sm flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 transition">
+          <button onclick="downloadCurrentModalPhoto()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 transition">
             <i class="fa-solid fa-download"></i>
             <span>Downloaden</span>
           </button>
 
           <!-- SELECTEREN VOOR PRINT -->
-          <button onclick="toggleModalPrintSelect()" id="modal-select-print-btn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition">
+          <button onclick="toggleModalPrintSelect()" id="modal-select-print-btn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 transition">
             <i class="fa-solid fa-print"></i>
             <span id="modal-print-label">Selecteren voor print</span>
           </button>
@@ -313,21 +321,21 @@
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Inlogcode <span class="text-indigo-500">*</span>
           </label>
-          <input type="text" id="missing-code-input" required placeholder="Bijv. ABC12345" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-mono tracking-wider focus:outline-none focus:border-indigo-500 uppercase">
+          <input type="text" id="missing-code-input" required placeholder="Bijv. ABC12345" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-white">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Naam van kind / leerling <span class="text-indigo-500">*</span>
           </label>
-          <input type="text" id="missing-name-input" required placeholder="Typ de volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+          <input type="text" id="missing-name-input" required placeholder="Typ de volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-white">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Jouw E-mailadres <span class="text-indigo-500">*</span>
           </label>
-          <input type="email" id="missing-email-input" required placeholder="jouw@email.nl" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+          <input type="email" id="missing-email-input" required placeholder="jouw@email.nl" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-white">
         </div>
 
         <!-- 7 Dagen Bericht -->
@@ -592,7 +600,7 @@
       }
 
       yearsBar.innerHTML = years.map(yr => `
-        <button onclick="selectYear('${yr}')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition ${yr === currentYear ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}">
+        <button onclick="selectYear('${yr}')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition ${yr === currentYear ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">
           ${yr}
         </button>
       `).join('');
@@ -625,7 +633,7 @@
               const activeVer = p.versions[p.activeVersionIndex || 0] || p.versions[0];
               const isSelected = selectedPhotos.some(sp => sp.photoId === p.id && sp.versionIdx === (p.activeVersionIndex || 0));
               return `
-                <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
+                <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group">
                   <div onclick="openDetailModal('school', '${currentYear}', ${idx})" class="relative aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer">
                     <img src="${activeVer.url}" onerror="this.src='${activeVer.backupUrl}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <div class="absolute top-3 left-3 bg-slate-950/75 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 border border-white/10">
@@ -638,7 +646,7 @@
                       <h3 class="font-bold text-base text-slate-900 dark:text-white">${p.name}</h3>
                       <p class="text-xs text-slate-500 dark:text-slate-400">Klik voor details (${p.versions.length} opties)</p>
                     </div>
-                    <button onclick="toggleQuickSelect('school', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700/70 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-200'}">
+                    <button onclick="toggleQuickSelect('school', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
                       <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-print'}"></i>
                       <span>${isSelected ? 'Gekozen' : 'Print'}</span>
                     </button>
@@ -656,7 +664,7 @@
           container.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               ${students.map((s, idx) => `
-                <div onclick="openPasswordModal(${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 rounded-2xl p-5 cursor-pointer transition flex items-center justify-between group">
+                <div onclick="openPasswordModal(${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 rounded-2xl p-5 cursor-pointer transition group flex items-center justify-between">
                   <div class="flex items-center gap-3.5">
                     <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition">
                       <i class="fa-solid fa-user-lock"></i>
@@ -690,7 +698,7 @@
                 const activeVer = p.versions[0];
                 const isSelected = selectedPhotos.some(sp => sp.photoId === p.id && sp.versionIdx === 0);
                 return `
-                  <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
+                  <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group">
                     <div onclick="openDetailModal('eigen', '${currentYear}', ${idx})" class="relative aspect-[3/4] bg-slate-950 overflow-hidden cursor-pointer">
                       <img src="${activeVer.url}" onerror="this.src='${activeVer.backupUrl}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     </div>
@@ -699,7 +707,7 @@
                         <h3 class="font-bold text-base text-slate-900 dark:text-white">${p.name}</h3>
                         <p class="text-xs text-slate-500 dark:text-slate-400">Klik voor details</p>
                       </div>
-                      <button onclick="toggleQuickSelect('eigen', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700/70 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-200'}">
+                      <button onclick="toggleQuickSelect('eigen', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
                         <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-print'}"></i>
                         <span>${isSelected ? 'Gekozen' : 'Print'}</span>
                       </button>
@@ -816,7 +824,7 @@
 
       const listEl = document.getElementById('modal-versions-list');
       listEl.innerHTML = currentDetailPhoto.versions.map((v, vIdx) => `
-        <div onclick="switchDetailVersion(${vIdx})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition ${vIdx === currentDetailVersionIdx ? 'border-blue-500 scale-105 shadow-md shadow-blue-500/30' : 'border-slate-700 opacity-60 hover:opacity-100'} bg-slate-950">
+        <div onclick="switchDetailVersion(${vIdx})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition ${vIdx === currentDetailVersionIdx ? 'border-blue-500' : 'border-slate-200 dark:border-slate-800'}">
           <img src="${v.url}" onerror="this.src='${v.backupUrl}'" class="w-full h-full object-cover">
         </div>
       `).join('');
@@ -825,10 +833,10 @@
       const printBtn = document.getElementById('modal-select-print-btn');
       const printLabel = document.getElementById('modal-print-label');
       if (isSelected) {
-        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition";
+        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition";
         printLabel.textContent = "Geselecteerd voor print";
       } else {
-        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition";
+        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 transition";
         printLabel.textContent = "Selecteren voor print";
       }
     }
