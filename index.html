@@ -620,7 +620,7 @@
 
       if (currentCategory === 'school') {
         const photos = (driveData.school && driveData.school[currentYear]) || [];
-        subtitle.textContent = `Jaar ${currentYear} • ${photos.length} groepen`;
+        subtitle.textContent = `Jaar ${currentYear} • ${photos.length} `;
 
         if (photos.length === 0) {
           container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen foto's voor ${currentYear}.</p>`;
