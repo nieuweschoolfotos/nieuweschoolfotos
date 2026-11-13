@@ -5,11 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>nieuwe schoolfoto's - Gratis Archief</title>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.17/dist/tailwind.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="manifest.js"></script>
-
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body {
@@ -26,8 +29,11 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 transition-colors duration-300 selection:bg-blue-500 selection:text-white">
 
+  <!-- BOVENBALK & NAVBAR -->
   <header class="w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+
+      <!-- LOGO -->
       <div onclick="navigateTo('page-home')" class="cursor-pointer flex items-center space-x-3 group">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
           <i class="fa-solid fa-unlock-keyhole text-white text-lg"></i>
@@ -37,12 +43,13 @@
         </span>
       </div>
 
+      <!-- SAĞ ÜST: TEMA VE PRINT BUTONLARI -->
       <div class="flex items-center space-x-3">
-        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 transition">
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-yellow-400 transition" title="Thema wisselen">
           <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
         </button>
 
-        <button onclick="openPrintModal()" class="text-xs md:text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2">
+        <button onclick="openPrintModal()" class="text-xs md:text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
           <i class="fa-solid fa-print"></i>
           <span>Selectie Printen (<span id="selected-count">0</span>)</span>
         </button>
@@ -50,7 +57,10 @@
     </div>
   </header>
 
+  <!-- HOOFDPAGINA INHOUD -->
   <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full flex flex-col justify-center">
+
+    <!-- PAGINA 1: HOME -->
     <section id="page-home" class="fade-in text-center py-16 flex flex-col items-center">
       <input type="file" id="local-folder-input" webkitdirectory directory multiple class="hidden" onchange="handleLocalFolderSelect(event)">
 
@@ -62,12 +72,13 @@
         Kies hieronder je categorie, selecteer de gewenste foto's en stuur direct een printaanvraag!
       </p>
 
-      <button onclick="navigateTo('page-selection')" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-base md:text-lg rounded-2xl shadow-lg shadow-blue-600/20 transition flex items-center gap-3">
+      <button onclick="navigateTo('page-selection')" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-lg rounded-2xl shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-105 transition-all duration-200 flex items-center gap-3">
         <span>Starten</span>
         <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
       </button>
     </section>
 
+    <!-- PAGINA 2: KEUZESCHERM -->
     <section id="page-selection" class="hidden fade-in py-8">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-extrabold mb-3">Maak een keuze</h2>
@@ -75,7 +86,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group">
+        <div onclick="selectCategory('school')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-blue-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
           <div class="w-20 h-20 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-3xl mb-6 group-hover:scale-110 transition">
             <i class="fa-solid fa-users"></i>
           </div>
@@ -86,7 +97,7 @@
           </span>
         </div>
 
-        <div onclick="selectCategory('eigen')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-indigo-500/50 hover:shadow-lg cursor-pointer transition group">
+        <div onclick="selectCategory('eigen')" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-indigo-500/50 hover:shadow-lg cursor-pointer transition group flex flex-col items-center text-center">
           <div class="w-20 h-20 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 text-3xl mb-6 group-hover:scale-110 transition">
             <i class="fa-solid fa-key"></i>
           </div>
@@ -105,6 +116,7 @@
       </div>
     </section>
 
+    <!-- PAGINA 3: GALERIJ & JAREN BALK -->
     <section id="page-gallery" class="hidden fade-in">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div class="flex items-center gap-4">
@@ -117,7 +129,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="refreshData()" title="Verversen" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center gap-2 text-sm font-medium">
+          <button onclick="refreshData()" title="Verversen" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition">
             <i class="fa-solid fa-rotate-right"></i> <span class="hidden sm:inline">Verversen</span>
           </button>
           <div id="years-bar" class="flex gap-2 overflow-x-auto pb-2 md:pb-0"></div>
@@ -125,8 +137,10 @@
       </div>
       <div id="gallery-content" class="min-h-[300px]"></div>
     </section>
+
   </main>
 
+  <!-- PRINT / BESTEL MODAL -->
   <div id="print-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 max-w-lg w-full relative fade-in">
       <button onclick="closePrintModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
@@ -146,12 +160,12 @@
       <form onsubmit="submitPrintOrder(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Jouw Naam</label>
-          <input type="text" id="order-name" required placeholder="Typ je volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40">
+          <input type="text" id="order-name" required placeholder="Typ je volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Papierformaat / Type</label>
-          <select id="order-paper-type" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40">
+          <select id="order-paper-type" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500">
             <option value="Fotopapier (Glanzend)">Fotopapier (Glanzend)</option>
             <option value="A4 Standaard Papier">A4 Standaard Papier</option>
           </select>
@@ -170,6 +184,7 @@
     </div>
   </div>
 
+  <!-- WACHTWOORD MODAL -->
   <div id="password-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 max-w-sm w-full relative fade-in">
       <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
@@ -186,7 +201,7 @@
 
       <form onsubmit="verifyPassword(event)" class="space-y-4">
         <div>
-          <input type="password" id="student-pass-input" required placeholder="Wachtwoord..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <input type="password" id="student-pass-input" required placeholder="Wachtwoord..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm text-center tracking-widest focus:outline-none focus:border-indigo-500">
           <p id="pass-error" class="text-red-400 text-xs mt-2 hidden text-center">Onjuiste code!</p>
         </div>
 
@@ -197,8 +212,11 @@
     </div>
   </div>
 
+  <!-- FOTO DETAILS & ACHTERGRONDEN MODAL -->
   <div id="detail-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 md:p-8 max-w-4xl w-full max-h-[92vh] flex flex-col relative fade-in shadow-2xl overflow-hidden">
+
+      <!-- Bovenbalk: Titel & Sluiten -->
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-lg">
@@ -209,48 +227,58 @@
             <p id="modal-photo-info" class="text-xs text-slate-500 dark:text-slate-400">Achtergrond- & versiedetails</p>
           </div>
         </div>
-        <button onclick="closeDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center">
+        <button onclick="closeDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
+      <!-- Midden: Grote Voorvertoning & Achtergronden -->
       <div class="flex-1 overflow-y-auto py-4 space-y-4">
         <div class="relative w-full h-[340px] md:h-[450px] rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center border border-slate-200 dark:border-slate-800 shadow-inner group">
           <img id="modal-main-img" src="" alt="Voorvertoning" class="w-full h-full object-contain transition-all duration-300">
 
+          <!-- Actieve Achtergrond Label (Sadece school için gösterilecek) -->
           <div id="modal-bg-badge" class="absolute bottom-3 left-3 bg-slate-950/75 backdrop-blur-md px-3.5 py-1.5 rounded-xl text-xs text-white flex items-center gap-2 border border-white/10 shadow-lg">
             <i class="fa-solid fa-layer-group text-blue-400"></i>
             <span id="modal-active-bg-name" class="font-semibold">Achtergrond: 1</span>
           </div>
         </div>
 
+        <!-- Achtergronden Kiezer (Sadece school için gösterilecek) -->
         <div id="modal-versions-section">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
             Beschikbare Achtergronden (<span id="modal-version-count">1</span>)
           </h4>
-          <div id="modal-versions-list" class="flex gap-3 overflow-x-auto pb-2 pt-1"></div>
+          <div id="modal-versions-list" class="flex gap-3 overflow-x-auto pb-2 pt-1">
+            <!-- Dynamische thumbnails -->
+          </div>
         </div>
       </div>
 
+      <!-- Onderbalk: Actieknoppen (Downloaden & Printen) -->
       <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="text-xs text-slate-500 text-center sm:text-left" id="modal-footer-hint">
           Kies een achtergrond om direct te downloaden of te selecteren voor print.
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto">
-          <button onclick="downloadCurrentModalPhoto()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs md:text-sm flex items-center justify-center gap-2">
+          <!-- DOWNLOADEN -->
+          <button onclick="downloadCurrentModalPhoto()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs md:text-sm flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 transition">
             <i class="fa-solid fa-download"></i>
             <span>Downloaden</span>
           </button>
 
-          <button onclick="toggleModalPrintSelect()" id="modal-select-print-btn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30">
+          <!-- SELECTEREN VOOR PRINT -->
+          <button onclick="toggleModalPrintSelect()" id="modal-select-print-btn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition">
             <i class="fa-solid fa-print"></i>
             <span id="modal-print-label">Selecteren voor print</span>
           </button>
         </div>
       </div>
+
     </div>
   </div>
 
+  <!-- IK STA ER NIET TUSSEN (MISSING INLOGCODE) MODAL -->
   <div id="missing-code-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 max-w-lg w-full relative fade-in shadow-2xl max-h-[92vh] overflow-y-auto">
       <button onclick="closeMissingCodeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white p-2">
@@ -267,6 +295,7 @@
         </div>
       </div>
 
+      <!-- Voorbeeld Inlogkaart Foto -->
       <div class="mb-5 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 relative group shadow-inner">
         <img src="https://www.nieuweschoolfoto.nl/infoimg/inloggen/nsf_inlogkaart.jpg" alt="Voorbeeld inlogkaart met code" class="w-full h-44 object-cover">
         <div class="p-2.5 bg-slate-900/95 backdrop-blur-sm text-[11px] text-slate-300 flex items-center gap-2 border-t border-slate-800">
@@ -275,28 +304,30 @@
         </div>
       </div>
 
+      <!-- Formulier -->
       <form onsubmit="submitMissingCode(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Inlogcode <span class="text-indigo-500">*</span>
           </label>
-          <input type="text" id="missing-code-input" required placeholder="Bijv. ABC12345" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <input type="text" id="missing-code-input" required placeholder="Bijv. ABC12345" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-mono tracking-wider focus:outline-none focus:border-indigo-500 uppercase">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Naam van kind / leerling <span class="text-indigo-500">*</span>
           </label>
-          <input type="text" id="missing-name-input" required placeholder="Typ de volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <input type="text" id="missing-name-input" required placeholder="Typ de volledige naam..." class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
             Jouw E-mailadres <span class="text-indigo-500">*</span>
           </label>
-          <input type="email" id="missing-email-input" required placeholder="jouw@email.nl" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <input type="email" id="missing-email-input" required placeholder="jouw@email.nl" class="w-full rounded-xl px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
         </div>
 
+        <!-- 7 Dagen Bericht -->
         <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs flex items-start gap-2.5">
           <i class="fa-solid fa-clock-rotate-left text-sm mt-0.5 flex-shrink-0"></i>
           <span><strong>Let op:</strong> Na verzending zoeken wij je foto's handmatig op en nemen wij <strong>binnen 7 dagen</strong> contact met je op per e-mail.</span>
@@ -310,11 +341,20 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer class="w-full border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500">
     <p>nieuwe schoolfoto's - Gratis Archief</p>
   </footer>
 
+  <!-- JAVASCRIPT LOGICA -->
   <script>
+    (function clearSiteStorage() {
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch (error) {}
+    })();
+
     let GITHUB_USERNAME = 'nieuweschoolfotos';
     let GITHUB_REPO = 'nieuweschoolfotos';
     let BRANCH = 'main';
@@ -327,9 +367,9 @@
       }
     }
 
-    const isLocalEnv = window.location.protocol === 'file:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1';
+    const isLocalEnv = window.location.protocol === 'file:' || 
+                       window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
 
     let driveData = { school: {}, eigen: {} };
     let isDataLoaded = false;
@@ -338,6 +378,7 @@
     let currentYear = '';
     let selectedStudent = null;
     let selectedPhotos = [];
+
     let currentDetailPhoto = null;
     let currentDetailVersionIdx = 0;
 
@@ -347,27 +388,15 @@
       return clean.trim() || filename.replace(/\.[^.]+$/, '');
     }
 
-    function applyFallbackData() {
-      if (typeof window.LOCAL_MANIFEST !== 'undefined') {
-        driveData = window.LOCAL_MANIFEST;
-        isDataLoaded = true;
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-          renderYearsBar();
-        }
-        return true;
-      }
-      return false;
-    }
-
     function toggleTheme() {
       const html = document.documentElement;
       const icon = document.getElementById('theme-icon');
       if (html.classList.contains('dark')) {
         html.classList.remove('dark');
-        icon.className = 'fa-solid fa-sun text-lg text-amber-500';
+        icon.className = "fa-solid fa-sun text-lg text-amber-500";
       } else {
         html.classList.add('dark');
-        icon.className = 'fa-solid fa-moon text-lg text-yellow-400';
+        icon.className = "fa-solid fa-moon text-lg text-yellow-400";
       }
     }
 
@@ -375,88 +404,78 @@
       isDataLoaded = false;
       driveData = { school: {}, eigen: {} };
       await fetchGitHubData();
-      if (!isDataLoaded) {
-        applyFallbackData();
-      }
     }
 
     async function fetchGitHubData() {
       if (isDataLoaded || isFetching) return;
       isFetching = true;
-
       try {
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1&_=${Date.now()}`, {
-          cache: 'no-store',
-          headers: { Accept: 'application/vnd.github+json' }
-        });
-
-        if (!res.ok) {
-          throw new Error(`GitHub API failed: ${res.status} ${res.statusText}`);
-        }
-
+        let res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1&_=${Date.now()}`, { cache: 'no-store' });
         let data = await res.json();
 
         if (!data.tree && BRANCH !== 'master') {
           BRANCH = 'master';
-          const fallbackRes = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1&_=${Date.now()}`, {
-            cache: 'no-store',
-            headers: { Accept: 'application/vnd.github+json' }
-          });
-          if (!fallbackRes.ok) {
-            throw new Error(`GitHub API failed: ${fallbackRes.status} ${fallbackRes.statusText}`);
-          }
-          data = await fallbackRes.json();
+          res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${BRANCH}?recursive=1&_=${Date.now()}`, { cache: 'no-store' });
+          data = await res.json();
         }
 
         if (!data.tree) {
-          applyFallbackData();
+          if (typeof window.MANIFEST_DATA !== 'undefined') {
+            driveData = window.MANIFEST_DATA;
+            isDataLoaded = true;
+          }
+          isFetching = false;
           return;
         }
 
-        const newschoolData = {};
-        const newEigenData = {};
+        let newschoolData = {};
+        let newEigenData = {};
         const imageRegex = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
         const isAllowedImage = (name) => imageRegex.test(name);
 
-        for (const item of data.tree) {
+        for (let item of data.tree) {
           if (item.type !== 'blob') continue;
-
           const pathParts = item.path.split('/');
           const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${encodeURI(item.path)}`;
           const localUrl = `./${item.path}`;
 
+          // SCHOOL: foto/school/YIL/GRUP_ADI/dosya.jpg
+          // Burada klasör adı (örn: vierhoeken) "grup/fotoğraf adı" olur, içindeki resimler ise arka plan versiyonları olur!
           if (pathParts[0] === 'foto' && pathParts[1] === 'school' && pathParts.length >= 4) {
             const year = pathParts[2];
             if (!newschoolData[year]) newschoolData[year] = [];
 
-            const groupName = pathParts[3];
-            const fileName = pathParts[pathParts.length - 1];
+            if (pathParts.length >= 5) {
+              const groupName = pathParts[3]; // Örn: vierhoeken
+              const fileName = pathParts[pathParts.length - 1]; // Örn: 1 Wit.jpeg
 
-            if (isAllowedImage(fileName)) {
-              let photo = newschoolData[year].find(p => p.name.toLowerCase() === groupName.toLowerCase());
+              if (isAllowedImage(fileName)) {
+                let photo = newschoolData[year].find(p => p.name.toLowerCase() === groupName.toLowerCase());
 
-              if (!photo) {
-                photo = {
-                  id: `school_${year}_${groupName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
-                  name: groupName,
-                  year,
-                  activeVersionIndex: 0,
-                  versions: []
-                };
-                newschoolData[year].push(photo);
+                if (!photo) {
+                  photo = {
+                    id: `school_${year}_${groupName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
+                    name: groupName,
+                    year: year,
+                    activeVersionIndex: 0,
+                    versions: []
+                  };
+                  newschoolData[year].push(photo);
+                }
+
+                const bgName = formatBgLabel(fileName);
+                photo.versions.push({
+                  folder: groupName,
+                  fileName: fileName,
+                  backgroundName: bgName,
+                  url: rawUrl,
+                  backupUrl: localUrl
+                });
               }
-
-              const bgName = formatBgLabel(fileName);
-              photo.versions.push({
-                folder: groupName,
-                fileName,
-                backgroundName: bgName,
-                url: rawUrl,
-                backupUrl: localUrl
-              });
             }
           }
 
+          // EIGEN: foto/eigen/YIL/OGRENCI_ADI/dosya.jpg -> Arka plan özelliği KAPALI
           if (pathParts[0] === 'foto' && pathParts[1] === 'eigen' && pathParts.length >= 4) {
             const year = pathParts[2];
             if (pathParts.length === 4 && pathParts[3] === 'pass.txt') continue;
@@ -476,21 +495,20 @@
                 if (txtRes.ok) {
                   studentObj.password = (await txtRes.text()).trim();
                 }
-              } catch (e) {
-                console.warn('Kon pass.txt niet ophalen:', e);
-              }
+              } catch (e) {}
             } else {
-              const fileName = pathParts[pathParts.length - 1];
+              let fileName = pathParts[pathParts.length - 1];
+
               if (isAllowedImage(fileName) && fileName.toLowerCase() !== 'pass.txt') {
                 studentObj.photos.push({
                   id: `eigen_${year}_${studentName}_${fileName}`.replace(/[^a-zA-Z0-9_-]/g, '_'),
                   name: fileName.replace(/\.[^.]+$/, ''),
-                  year,
+                  year: year,
                   student: studentName,
                   activeVersionIndex: 0,
                   versions: [{
                     folder: 'Eigen',
-                    fileName,
+                    fileName: fileName,
                     backgroundName: fileName,
                     url: rawUrl,
                     backupUrl: localUrl
@@ -501,13 +519,12 @@
           }
         }
 
-        for (const yr in newschoolData) {
+        for (let yr in newschoolData) {
           newschoolData[yr].forEach(p => {
             p.versions.sort((a, b) => (a.fileName || '').localeCompare(b.fileName || '', undefined, { numeric: true }));
           });
         }
-
-        for (const yr in newEigenData) {
+        for (let yr in newEigenData) {
           newEigenData[yr].forEach(s => {
             s.photos.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
           });
@@ -516,13 +533,9 @@
         driveData = { school: newschoolData, eigen: newEigenData };
         isDataLoaded = true;
       } catch (err) {
-        console.warn('Fout bij laden van GitHub gegevens, fallback naar lokaal manifest:', err);
-        applyFallbackData();
+        console.error("Fout bij laden van GitHub gegevens:", err);
       } finally {
         isFetching = false;
-        if (isDataLoaded && document.getElementById('gallery-content')) {
-          renderYearsBar();
-        }
       }
     }
 
@@ -544,8 +557,8 @@
 
       const title = document.getElementById('gallery-title');
       const subtitle = document.getElementById('gallery-subtitle');
-      title.textContent = cat === 'school' ? 'school foto's' : 'Per Persoon';
-      subtitle.textContent = 'Laden...';
+      title.textContent = cat === 'school' ? "school foto's" : "Per Persoon";
+      subtitle.textContent = "Laden...";
 
       if (!isDataLoaded) {
         document.getElementById('gallery-content').innerHTML = `
@@ -571,7 +584,7 @@
 
       if (years.length === 0) {
         yearsBar.innerHTML = '';
-        document.getElementById('gallery-subtitle').textContent = 'Geen jaren gevonden';
+        document.getElementById('gallery-subtitle').textContent = "Geen jaren gevonden";
         document.getElementById('gallery-content').innerHTML = `
           <div class="text-center py-16 text-slate-500">
             <i class="fa-regular fa-folder-open text-4xl mb-3"></i>
@@ -585,7 +598,7 @@
       }
 
       yearsBar.innerHTML = years.map(yr => `
-        <button onclick="selectYear('${yr}')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition ${yr === currentYear ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}">
+        <button onclick="selectYear('${yr}')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition ${yr === currentYear ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}">
           ${yr}
         </button>
       `).join('');
@@ -605,7 +618,7 @@
 
       if (currentCategory === 'school') {
         const photos = (driveData.school && driveData.school[currentYear]) || [];
-        subtitle.textContent = `Jaar ${currentYear} • ${photos.length} foto's`;
+        subtitle.textContent = `Jaar ${currentYear} • ${photos.length} groepen`;
 
         if (photos.length === 0) {
           container.innerHTML = `<p class="text-center text-slate-500 py-12">Geen foto's voor ${currentYear}.</p>`;
@@ -618,7 +631,7 @@
               const activeVer = p.versions[p.activeVersionIndex || 0] || p.versions[0];
               const isSelected = selectedPhotos.some(sp => sp.photoId === p.id && sp.versionIdx === (p.activeVersionIndex || 0));
               return `
-                <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
                   <div onclick="openDetailModal('school', '${currentYear}', ${idx})" class="relative aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer">
                     <img src="${activeVer.url}" onerror="this.src='${activeVer.backupUrl}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <div class="absolute top-3 left-3 bg-slate-950/75 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 border border-white/10">
@@ -631,7 +644,7 @@
                       <h3 class="font-bold text-base text-slate-900 dark:text-white">${p.name}</h3>
                       <p class="text-xs text-slate-500 dark:text-slate-400">Klik voor details (${p.versions.length} opties)</p>
                     </div>
-                    <button onclick="toggleQuickSelect('school', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}">
+                    <button onclick="toggleQuickSelect('school', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700/70 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-200'}">
                       <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-print'}"></i>
                       <span>${isSelected ? 'Gekozen' : 'Print'}</span>
                     </button>
@@ -649,7 +662,7 @@
           container.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               ${students.map((s, idx) => `
-                <div onclick="openPasswordModal(${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 rounded-2xl p-5 cursor-pointer transition group flex items-center justify-between gap-3">
+                <div onclick="openPasswordModal(${idx})" class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 rounded-2xl p-5 cursor-pointer transition flex items-center justify-between group">
                   <div class="flex items-center gap-3.5">
                     <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition">
                       <i class="fa-solid fa-user-lock"></i>
@@ -683,7 +696,7 @@
                 const activeVer = p.versions[0];
                 const isSelected = selectedPhotos.some(sp => sp.photoId === p.id && sp.versionIdx === 0);
                 return `
-                  <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+                  <div class="bg-white dark:bg-slate-800/70 border ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200 dark:border-slate-800'} rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
                     <div onclick="openDetailModal('eigen', '${currentYear}', ${idx})" class="relative aspect-[3/4] bg-slate-950 overflow-hidden cursor-pointer">
                       <img src="${activeVer.url}" onerror="this.src='${activeVer.backupUrl}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     </div>
@@ -692,7 +705,7 @@
                         <h3 class="font-bold text-base text-slate-900 dark:text-white">${p.name}</h3>
                         <p class="text-xs text-slate-500 dark:text-slate-400">Klik voor details</p>
                       </div>
-                      <button onclick="toggleQuickSelect('eigen', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}">
+                      <button onclick="toggleQuickSelect('eigen', '${currentYear}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-700/70 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-200'}">
                         <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-print'}"></i>
                         <span>${isSelected ? 'Gekozen' : 'Print'}</span>
                       </button>
@@ -775,7 +788,7 @@
       currentDetailVersionIdx = currentDetailPhoto.activeVersionIndex || 0;
 
       document.getElementById('modal-photo-name').textContent = currentDetailPhoto.name;
-
+      
       const versionsSection = document.getElementById('modal-versions-section');
       const bgBadge = document.getElementById('modal-bg-badge');
 
@@ -809,7 +822,7 @@
 
       const listEl = document.getElementById('modal-versions-list');
       listEl.innerHTML = currentDetailPhoto.versions.map((v, vIdx) => `
-        <div onclick="switchDetailVersion(${vIdx})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition ${vIdx === currentDetailVersionIdx ? 'border-blue-500' : 'border-slate-200 dark:border-slate-700'}">
+        <div onclick="switchDetailVersion(${vIdx})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition ${vIdx === currentDetailVersionIdx ? 'border-blue-500 scale-105 shadow-md shadow-blue-500/30' : 'border-slate-700 opacity-60 hover:opacity-100'} bg-slate-950">
           <img src="${v.url}" onerror="this.src='${v.backupUrl}'" class="w-full h-full object-cover">
         </div>
       `).join('');
@@ -818,11 +831,11 @@
       const printBtn = document.getElementById('modal-select-print-btn');
       const printLabel = document.getElementById('modal-print-label');
       if (isSelected) {
-        printBtn.className = 'flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30';
-        printLabel.textContent = 'Geselecteerd voor print';
+        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition";
+        printLabel.textContent = "Geselecteerd voor print";
       } else {
-        printBtn.className = 'flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30';
-        printLabel.textContent = 'Selecteren voor print';
+        printBtn.className = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition";
+        printLabel.textContent = "Selecteren voor print";
       }
     }
 
@@ -872,14 +885,14 @@
     }
 
     function toggleQuickSelect(category, year, photoIdx) {
-      const photoList = (category === 'school') ? (driveData.school[year] || []) : (selectedStudent ? selectedStudent.photos : []);
+      let photoList = (category === 'school') ? (driveData.school[year] || []) : (selectedStudent ? selectedStudent.photos : []);
       const p = photoList[photoIdx];
       if (!p) return;
 
       const vIdx = p.activeVersionIndex || 0;
       const ver = p.versions[vIdx] || p.versions[0];
-      const existingIdx = selectedPhotos.findIndex(sp => sp.photoId === p.id && sp.versionIdx === vIdx);
 
+      const existingIdx = selectedPhotos.findIndex(sp => sp.photoId === p.id && sp.versionIdx === vIdx);
       if (existingIdx > -1) {
         selectedPhotos.splice(existingIdx, 1);
       } else {
@@ -902,7 +915,7 @@
     function openPrintModal() {
       const listEl = document.getElementById('order-selected-list');
       if (selectedPhotos.length === 0) {
-        listEl.innerHTML = '<p class="text-slate-400 text-center py-2">Geen foto's geselecteerd.</p>';
+        listEl.innerHTML = `<p class="text-slate-400 text-center py-2">Geen foto's geselecteerd.</p>`;
       } else {
         listEl.innerHTML = selectedPhotos.map((sp, idx) => `
           <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800">
@@ -919,7 +932,7 @@
     }
 
     function closePrintModal() {
-      document.getElementById('print-modal').classList.add('hidden');
+      document.getElementById('print-modal'].classList.add('hidden');
       document.getElementById('print-modal').classList.remove('flex');
     }
 
@@ -933,10 +946,10 @@
     function submitPrintOrder(e) {
       e.preventDefault();
       const name = document.getElementById('order-name').value;
-      const paperType = document.getElementById('order-paper-type').value;
+      const paperType = document.getElementById('order-paper-type'].value;
 
       if (selectedPhotos.length === 0) {
-        alert('Selecteer eerst minstens één foto!');
+        alert("Selecteer eerst minstens één foto!");
         return;
       }
 
@@ -948,21 +961,9 @@
       closePrintModal();
     }
 
-    Object.assign(window, {
-      navigateTo, toggleTheme, openPrintModal, closePrintModal,
-      selectCategory, refreshData, selectYear, openPasswordModal,
-      closePasswordModal, verifyPassword, openMissingCodeModal,
-      closeMissingCodeModal, submitMissingCode, openDetailModal,
-      updateDetailModalView, switchDetailVersion, closeDetailModal,
-      downloadCurrentModalPhoto, toggleModalPrintSelect,
-      toggleQuickSelect, updateSelectedCount, removeSelectedPhoto,
-      submitPrintOrder
-    });
-
-    window.addEventListener('DOMContentLoaded', function() {
-      applyFallbackData();
+    window.onload = function() {
       initData();
-    });
+    };
   </script>
 </body>
 </html>
