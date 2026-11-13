@@ -348,13 +348,6 @@
 
   <!-- JAVASCRIPT LOGICA -->
   <script>
-    (function clearSiteStorage() {
-      try {
-        localStorage.clear();
-        sessionStorage.clear();
-      } catch (error) {}
-    })();
-
     let GITHUB_USERNAME = 'nieuweschoolfotos';
     let GITHUB_REPO = 'nieuweschoolfotos';
     let BRANCH = 'main';
@@ -959,9 +952,22 @@
       closePrintModal();
     }
 
-    window.onload = function() {
+    // Maak functies expliciet beschikbaar voor de inline onclick/onsubmit-attributen.
+    // Dit voorkomt "navigateTo is not defined" wanneer de pagina anders wordt geladen.
+    Object.assign(window, {
+      navigateTo, toggleTheme, openPrintModal, closePrintModal,
+      selectCategory, refreshData, selectYear, openPasswordModal,
+      closePasswordModal, verifyPassword, openMissingCodeModal,
+      closeMissingCodeModal, submitMissingCode, openDetailModal,
+      updateDetailModalView, switchDetailVersion, closeDetailModal,
+      downloadCurrentModalPhoto, toggleModalPrintSelect,
+      toggleQuickSelect, updateSelectedCount, removeSelectedPhoto,
+      submitPrintOrder
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
       initData();
-    };
+    });
   </script>
 </body>
 </html>
